@@ -1,0 +1,264 @@
+/* =======================
+   GLOBAL
+======================= */
+body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    margin: 0;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    background: #111827;
+    border-bottom: 1px solid #1f2937;
+}
+
+/* =======================
+   DASHBOARD
+======================= */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.card {
+    background: linear-gradient(145deg, #1f2937, #111827);
+    padding: 18px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: 1px solid #243041;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: #3b82f6;
+}
+
+/* =======================
+   BUILDING LAYOUT
+======================= */
+#building {
+    padding: 20px;
+}
+
+.floor {
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 16px;
+    background: #111827;
+    border: 1px solid #1f2937;
+}
+
+.floor h2 {
+    margin: 0 0 10px;
+    color: #60a5fa;
+}
+
+.apartments {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.apartment {
+    background: #0b1220;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #1f2937;
+    min-width: 200px;
+}
+
+.room h4 {
+    margin: 8px 0;
+    color: #9ca3af;
+}
+
+/* =======================
+   BED CARD (IMPORTANT PART)
+======================= */
+.available, .occupied {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+/* Available */
+.available {
+    background: #1f2937;
+    color: #d1d5db;
+}
+
+.available:hover {
+    background: #374151;
+}
+
+/* Occupied */
+.occupied {
+    background: #0b3b2e;
+    border: 1px solid #10b981;
+    color: #d1fae5;
+}
+
+/* =======================
+   PAID BUTTON
+======================= */
+.paid-btn {
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.paid-btn.paid {
+    background: #10b981;
+    color: #052e1f;
+}
+
+.paid-btn.unpaid {
+    background: #ef4444;
+    color: white;
+}
+
+/* =======================
+   MODAL
+======================= */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #111827;
+    padding: 20px;
+    border-radius: 14px;
+    width: 300px;
+    border: 1px solid #1f2937;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    background: #0b1220;
+    color: white;
+}
+
+.modal-content button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#saveCustomer {
+    background: #3b82f6;
+    color: white;
+}
+
+#updateCustomer {
+    background: #10b981;
+    color: white;
+}
+
+#checkoutCustomer {
+    background: #ef4444;
+    color: white;
+}
+
+#cancelCustomer, #cancelEdit {
+    background: #374151;
+    color: white;
+}
+#kpiList {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.kpi-item {
+    background: #0b1220;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+    font-size: 13px;
+}
+.search-box {
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+#searchInput {
+    width: 60%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #1f2937;
+    background: #0b1220;
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
+
+#searchInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 10px rgba(59,130,246,0.3);
+}
+.highlight {
+    outline: 2px solid #3b82f6;
+}
+btn.scrollIntoView({ behavior: "smooth", block: "center" });
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.tab-btn{
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+.tab-content{
+    width:100%;
+}
+
+.history-month{
+    margin-bottom:20px;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:#fff;
+}
+
+.history-item{
+    padding:8px 0;
+}
+
