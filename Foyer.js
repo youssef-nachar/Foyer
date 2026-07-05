@@ -291,21 +291,52 @@ function showKpi(type) {
     let list = [];
 
     for (let i = 0; i < customers.length; i++) {
+
         const c = customers[i];
 
+        // حساب الموقع الجغرافي داخل المبنى
+        const bedsPerRoom = beds;
+        const bedsPerApartment = rooms * beds;
+        const bedsPerFloor = apartments * rooms * beds;
+
+        const floorNumber = Math.floor(i / bedsPerFloor) + 1;
+
+        const apartmentNumber =
+            Math.floor((i % bedsPerFloor) / bedsPerApartment) + 1;
+
+        const roomNumber =
+            Math.floor((i % bedsPerApartment) / beds) + 1;
+
+        const bedNumber = (i % beds) + 1;
+
         if (type === "available" && !c) {
-            list.push({ name: "Empty Bed", index: i });
+            list.push({
+                type: "available",
+                floor: floorNumber,
+                apartment: apartmentNumber,
+                room: roomNumber,
+                bed: bedNumber,
+                index: i
+            });
         }
 
         if (c) {
-            if (type === "occupied") list.push(c);
 
-            if (type === "paid" && c.paid === "Paid") list.push(c);
+            if (type === "occupied") {
+                list.push({ ...c, floor: floorNumber, apartment: apartmentNumber, room: roomNumber, bed: bedNumber });
+            }
 
-            if (type === "unpaid" && c.paid !== "Paid") list.push(c);
+            if (type === "paid" && c.paid === "Paid") {
+                list.push({ ...c, floor: floorNumber, apartment: apartmentNumber, room: roomNumber, bed: bedNumber });
+            }
+
+            if (type === "unpaid" && c.paid !== "Paid") {
+                list.push({ ...c, floor: floorNumber, apartment: apartmentNumber, room: roomNumber, bed: bedNumber });
+            }
         }
     }
 
+    // العنوان
     if (type === "occupied") title = "Occupied Customers";
     if (type === "available") title = "Available Beds";
     if (type === "paid") title = "Paid Customers";
@@ -313,15 +344,30 @@ function showKpi(type) {
 
     kpiTitle.innerText = title;
 
+    // العرض
     list.forEach(item => {
 
         const div = document.createElement("div");
         div.className = "kpi-item";
 
-        if (type === "available") {
-            div.innerText = `Bed #${item.index + 1} - Empty`;
+        if (item.type === "available") {
+
+            div.innerHTML = `
+                🛏️ <b>Empty Bed</b><br>
+                🏢 Floor ${item.floor} | Apartment ${item.apartment}<br>
+                🚪 Room ${item.room} | Bed ${item.bed}
+            `;
+
         } else {
-            div.innerText = `${item.name} | ${item.phone || ""} | ${item.paid || ""}`;
+
+            div.innerHTML = `
+                🏢 Floor ${item.floor} | Apartment ${item.apartment}<br>
+                🚪 Room ${item.room} | Bed ${item.bed}<br><br>
+
+                👤 ${item.name}<br>
+                📞 ${item.phone || "-"}<br>
+                💰 ${item.paid || "-"}
+            `;
         }
 
         kpiList.appendChild(div);
@@ -435,19 +481,51 @@ function saveMonthlyPaidRecord() {
     localStorage.setItem("paymentHistory", JSON.stringify(paymentHistory));
 }
 function showHistory() {
+    const modal = document.getElementById("historyModal");
+    const container = document.getElementById("historyContainer");
 
-    let text = "";
+    container.innerHTML = "";
 
-    for (let month in paymentHistory) {
+    const months = Object.keys(paymentHistory).sort().reverse();
 
-        text += `\n📅 ${month}\n`;
-
-        paymentHistory[month].forEach(c => {
-            text += `- ${c.name} | ${c.phone}\n`;
-        });
-
-        text += "\n-----------------\n";
+    if (months.length === 0) {
+        container.innerHTML = "<p>No payment history available.</p>";
+        modal.style.display = "flex";
+        return;
     }
 
-    alert(text);
+    months.forEach(month => {
+
+        const monthBox = document.createElement("div");
+        monthBox.className = "history-month";
+
+        const title = document.createElement("h3");
+        title.innerText = `📅 ${month}`;
+
+        const list = document.createElement("div");
+        list.className = "history-list";
+
+        paymentHistory[month].forEach(c => {
+
+            const item = document.createElement("div");
+            item.className = "history-item";
+
+            item.innerHTML = `
+                <span class="name">👤 ${c.name}</span>
+                <span class="phone">📞 ${c.phone || "-"}</span>
+            `;
+
+            list.appendChild(item);
+        });
+
+        monthBox.appendChild(title);
+        monthBox.appendChild(list);
+
+        container.appendChild(monthBox);
+    });
+
+    modal.style.display = "flex";
+}
+function closeHistory() {
+    document.getElementById("historyModal").style.display = "none";
 }
