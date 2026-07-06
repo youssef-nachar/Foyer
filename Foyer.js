@@ -50,9 +50,9 @@ for (let floor = 1; floor <= floors; floor++) {
     for (let apartment = 1; apartment <= apartments; apartment++) {
 
         const apartmentDiv = document.createElement("div");
-apartmentDiv.className = "apartment";
+        apartmentDiv.className = "apartment";
 
-apartmentDiv.innerHTML = `
+        apartmentDiv.innerHTML = `
     <div class="apartment-header">
         🏢 Apartment ${apartment}
     </div>
@@ -77,7 +77,7 @@ apartmentDiv.innerHTML = `
                 // CLICK
                 button.onclick = function () {
                     selectedBed = button;
-                    modal.style.display = "block";
+                   modal.style.display = "flex";
                 };
 
                 // RIGHT CLICK EDIT
@@ -129,25 +129,25 @@ saveBtn.onclick = function () {
     const i = selectedBed.dataset.index;
 
     customers[i] = {
-    name,
-    phone,
-    paid: "Unpaid",
-    date: new Date().toLocaleString()
-};
+        name,
+        phone,
+        paid: "Unpaid",
+        date: new Date().toLocaleString()
+    };
 
     selectedBed.className = "occupied";
 
-   // const paidStatus = paid === "Paid" ? "Paid" : "Unpaid";
+    // const paidStatus = paid === "Paid" ? "Paid" : "Unpaid";
 
-updateBedUI(i);
-saveCustomers();
+    updateBedUI(i);
+    saveCustomers();
     selectedBed.style.pointerEvents = "auto";
 
     modal.style.display = "none";
 
     document.getElementById("customerName").value = "";
     document.getElementById("customerPhone").value = "";
-    
+
     updateDashboard();
 };
 
@@ -166,7 +166,7 @@ checkoutBtn.onclick = function () {
     const i = selectedBed.dataset.index;
 
     customers[i] = null;
-saveCustomers();
+    saveCustomers();
     selectedBed.className = "available";
     selectedBed.innerHTML = selectedBed.dataset.bedName;
     selectedBed.disabled = false;
@@ -240,7 +240,7 @@ function togglePaid(button, index) {
 
     paidBtn.innerText = status;
     paidBtn.className = "paid-btn " + (status === "Paid" ? "paid" : "unpaid");
-saveMonthlyPaidRecord();
+    saveMonthlyPaidRecord();
     updateDashboard();
 }
 
@@ -252,20 +252,57 @@ function createPaidButton(index) {
     btn.className = "paid-btn " + (status === "Paid" ? "paid" : "unpaid");
     btn.innerText = status;
 
-    btn.onclick = function (e) {
-        e.stopPropagation(); // يمنع فتح المودال
+btn.onclick = function (e) {
 
-        customers[index].paid =
-            customers[index].paid === "Paid" ? "Unpaid" : "Paid";
-saveCustomers();
+    e.stopPropagation();
+
+    if (customers[index].paid === "Paid") {
+
+        showConfirm(
+            "Are you sure you want to change this customer to Unpaid?",
+            function () {
+
+                customers[index].paid = "Unpaid";
+
+                saveCustomers();
+                updateBedUI(index);
+                updateDashboard();
+                saveMonthlyPaidRecord();
+
+            }
+        );
+
+    } else {
+
+        customers[index].paid = "Paid";
+
+        saveCustomers();
         updateBedUI(index);
         updateDashboard();
-        saveCustomers();
-saveMonthlyPaidRecord();
+        saveMonthlyPaidRecord();
 
+    }
+};
+    return btn;
+}
+const confirmModal = document.getElementById("confirmModal");
+const confirmOk = document.getElementById("confirmOk");
+const confirmCancel = document.getElementById("confirmCancel");
+
+function showConfirm(message, callback) {
+
+    document.getElementById("confirmText").innerText = message;
+
+    confirmModal.style.display = "flex";
+
+    confirmOk.onclick = function () {
+        confirmModal.style.display = "none";
+        callback();
     };
 
-    return btn;
+    confirmCancel.onclick = function () {
+        confirmModal.style.display = "none";
+    };
 }
 function updateBedUI(index) {
     const button = document.querySelector(`[data-index="${index}"]`);
@@ -273,8 +310,11 @@ function updateBedUI(index) {
 
     if (!button || !c) return;
 
-    button.className = "occupied";
-
+if (c.paid === "Unpaid") {
+    button.className = "occupied unpaid-card";
+} else {
+    button.className = "occupied paid-card";
+}
     button.innerHTML = `
         <b>${c.name}</b><br>
         ${c.phone}<br>
@@ -354,9 +394,9 @@ function showKpi(type) {
         const div = document.createElement("div");
         div.className = "kpi-item";
 
-if (item.type === "available") {
+        if (item.type === "available") {
 
-    div.innerHTML = `
+            div.innerHTML = `
         <div class="kpi-title">🛏 Empty Bed</div>
 
         <div class="kpi-row">
@@ -380,9 +420,9 @@ if (item.type === "available") {
         </div>
     `;
 
-} else {
+        } else {
 
-    div.innerHTML = `
+            div.innerHTML = `
         <div class="kpi-title">${item.name}</div>
 
         <div class="kpi-row">
@@ -412,12 +452,12 @@ if (item.type === "available") {
 
         <div class="kpi-row">
             <span>Status</span>
-            <b style="color:${item.paid=="Paid" ? "#22c55e" : "#ef4444"}">
+            <b style="color:${item.paid == "Paid" ? "#22c55e" : "#ef4444"}">
                 ${item.paid}
             </b>
         </div>
     `;
-}
+        }
         kpiList.appendChild(div);
     });
 
@@ -430,48 +470,106 @@ function closeKpi() {
 const searchInput = document.getElementById("searchInput");
 
 searchInput.addEventListener("input", function () {
+
     const value = this.value.toLowerCase().trim();
 
-    for (let i = 0; i < customers.length; i++) {
+    document.querySelectorAll(".floor").forEach(floor => {
 
-        const btn = document.querySelector(`[data-index="${i}"]`);
-        const c = customers[i];
+        let floorHasResult = false;
 
-        if (!btn) continue;
+        floor.querySelectorAll(".apartment").forEach(apartment => {
 
-        // reset visibility
-        btn.style.display = "block";
+            let apartmentHasResult = false;
 
-        if (value === "") continue;
+            apartment.querySelectorAll(".room").forEach(room => {
 
-        let match = false;
+                let roomHasResult = false;
 
-        // 1. search by name / phone
-        if (c) {
-            if (c.name.toLowerCase().includes(value)) match = true;
-            if (c.phone && c.phone.includes(value)) match = true;
-            if (c.paid && c.paid.toLowerCase().includes(value)) match = true;
-        }
+                room.querySelectorAll("button").forEach(btn => {
 
-        // 2. search by bed index
-        const bedNumber = i + 1;
-        if (bedNumber.toString().includes(value)) match = true;
+                    const i = btn.dataset.index;
+                    const c = customers[i];
+const bedsPerRoom = beds;
+const bedsPerApartment = rooms * beds;
+const bedsPerFloor = apartments * rooms * beds;
 
-        // 3. search by room/apartment logic
-        const bedsPerRoom = beds;
-        const bedsPerApartment = rooms * beds;
+const floorNumber = Math.floor(i / bedsPerFloor) + 1;
+const apartmentNumber = Math.floor((i % bedsPerFloor) / bedsPerApartment) + 1;
+const roomNumber = Math.floor((i % bedsPerApartment) / beds) + 1;
+const bedNumber = (i % beds) + 1;
+                    let match = false;
 
-        const apartmentNumber = Math.floor(i / bedsPerApartment) + 1;
-        const roomNumber = Math.floor((i % bedsPerApartment) / beds) + 1;
+                    if (value === "") {
+                        match = true;
+                    } else {
 
-        if (apartmentNumber.toString().includes(value)) match = true;
-        if (roomNumber.toString().includes(value)) match = true;
+                        if (c) {
 
-        // hide or show
-        btn.style.display = match ? "block" : "none";
-    }
+                            if (c.name.toLowerCase().includes(value))
+                                match = true;
+
+                            if (c.phone && c.phone.includes(value))
+                                match = true;
+
+                            if (c.paid.toLowerCase().includes(value))
+                                match = true;
+                        }
+
+                        // رقم السرير
+// البحث بالطابق
+if (`floor ${floorNumber}`.toLowerCase().includes(value))
+    match = true;
+
+// البحث بالشقة
+if (`apartment ${apartmentNumber}`.toLowerCase().includes(value))
+    match = true;
+
+// البحث بالغرفة
+if (`room ${roomNumber}`.toLowerCase().includes(value))
+    match = true;
+
+// البحث بالسرير
+if (`bed ${bedNumber}`.toLowerCase().includes(value))
+    match = true;
+
+// البحث بالأرقام فقط
+if (floorNumber.toString() === value)
+    match = true;
+
+if (apartmentNumber.toString() === value)
+    match = true;
+
+if (roomNumber.toString() === value)
+    match = true;
+
+if (bedNumber.toString() === value)
+    match = true;
+                    }
+
+btn.style.visibility = match ? "visible" : "hidden";
+                    if (match)
+                        roomHasResult = true;
+
+                });
+
+room.style.display = roomHasResult ? "" : "none";
+
+                if (roomHasResult)
+                    apartmentHasResult = true;
+
+            });
+
+apartment.style.display = apartmentHasResult ? "" : "none";
+
+            if (apartmentHasResult)
+                floorHasResult = true;
+
+        });
+
+floor.style.display = floorHasResult ? "" : "none";
+    });
+
 });
-
 function resetMonthlyPayments() {
 
     const now = new Date();
@@ -522,11 +620,37 @@ function saveMonthlyPaidRecord() {
     const now = new Date();
     const key = `${now.getFullYear()}-${now.getMonth()}`;
 
-    const paidCustomers = customers.filter(c => c && c.paid === "Paid");
+    const paidCustomers = [];
+
+    for (let i = 0; i < customers.length; i++) {
+
+        const c = customers[i];
+
+        if (!c || c.paid !== "Paid") continue;
+
+        const bedsPerApartment = rooms * beds;
+        const bedsPerFloor = apartments * rooms * beds;
+
+        const floor = Math.floor(i / bedsPerFloor) + 1;
+        const apartment = Math.floor((i % bedsPerFloor) / bedsPerApartment) + 1;
+        const room = Math.floor((i % bedsPerApartment) / beds) + 1;
+        const bed = (i % beds) + 1;
+
+        paidCustomers.push({
+            ...c,
+            floor,
+            apartment,
+            room,
+            bed
+        });
+    }
 
     paymentHistory[key] = paidCustomers;
 
-    localStorage.setItem("paymentHistory", JSON.stringify(paymentHistory));
+    localStorage.setItem(
+        "paymentHistory",
+        JSON.stringify(paymentHistory)
+    );
 }
 function showHistory() {
 
@@ -558,6 +682,7 @@ function showHistory() {
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Floor</th>
+                    <th>appartement</th>
                     <th>Room</th>
                     <th>Bed</th>
                 </tr>
@@ -572,11 +697,14 @@ function showHistory() {
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
-                <td>👤 ${c.name}</td>
-                <td>📞 ${c.phone || "-"}</td>
-                <td>${c.floor || "-"}</td>
-                <td>${c.room || "-"}</td>
-                <td>${c.bed || "-"}</td>
+<tr>
+    <td>👤 ${c.name}</td>
+    <td>📞 ${c.phone || "-"}</td>
+    <td>${c.floor}</td>
+    <td>${c.apartment}</td>
+    <td>${c.room}</td>
+    <td>${c.bed}</td>
+</tr>
             `;
 
             tbody.appendChild(tr);
