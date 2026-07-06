@@ -4,92 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building Management System</title>
+
     <link rel="stylesheet" href="Foyer.css">
 </head>
 <body>
 
-    <h1>Building Management System</h1>
-<div class="dashboard">
+    <!-- Header -->
+    <header>
+        <h1>🏢 Building Management System</h1>
+    </header>
 
-   <div class="card" onclick="showKpi('occupied')">
-    Occupied: <span id="occupiedBeds">0</span>
-   </div>
+    <!-- Dashboard -->
+    <section class="dashboard">
 
-<div class="card" onclick="showKpi('available')">
-    Available: <span id="availableBeds">0</span>
-  </div>
+        <div class="card" onclick="showKpi('occupied')">
+            <h3>Occupied</h3>
+            <span id="occupiedBeds">0</span>
+        </div>
 
-<div class="card" onclick="showKpi('paid')">
-    Paid: <span id="paidCustomers">0</span>
-</div>
+        <div class="card" onclick="showKpi('available')">
+            <h3>Available</h3>
+            <span id="availableBeds">0</span>
+        </div>
 
-<div class="card" onclick="showKpi('unpaid')">
-    Unpaid: <span id="unpaidCustomers">0</span>
-</div>
-<div class="search-box">
-    <input id="searchInput" type="text" placeholder="Search by name, bed, room, apartment...">
-</div>
-<button onclick="showHistory()">Payment History</button>
-</div>
-    <div id="building"></div>
-<!-- Customer Modal -->
+        <div class="card" onclick="showKpi('paid')">
+            <h3>Paid</h3>
+            <span id="paidCustomers">0</span>
+        </div>
 
-<div id="customerModal" class="modal">
+        <div class="card" onclick="showKpi('unpaid')">
+            <h3>Unpaid</h3>
+            <span id="unpaidCustomers">0</span>
+        </div>
 
-    <div class="modal-content">
+    </section>
 
-        <h2>Add Customer</h2>
+    <!-- Search + Actions -->
+    <section class="top-bar">
 
-        <input type="text" id="customerName" placeholder="Customer Name">
+        <div class="search-box">
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search by customer, floor, apartment, room or bed...">
+        </div>
 
-        <input type="text" id="customerPhone" placeholder="Phone Number">
+        <button class="history-btn" onclick="showHistory()">
+            📄 Payment History
+        </button>
 
+    </section>
 
-        <button id="saveCustomer">Save</button>
+    <!-- Building -->
+    <main id="building"></main>
 
-        <button id="cancelCustomer">Cancel</button>
+    <!-- ========================= -->
+    <!-- Add Customer -->
+    <!-- ========================= -->
+
+    <div id="customerModal" class="modal">
+
+        <div class="modal-content">
+
+            <h2>Add Customer</h2>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Customer Name">
+
+            <input
+                type="text"
+                id="customerPhone"
+                placeholder="Phone Number">
+
+            <button id="saveCustomer">
+                Save
+            </button>
+
+            <button id="cancelCustomer">
+                Cancel
+            </button>
+
+        </div>
 
     </div>
-<div id="editModal" class="modal">
 
-    <div class="modal-content">
+    <!-- ========================= -->
+    <!-- Edit Customer -->
+    <!-- ========================= -->
 
-        <h2>Edit Customer</h2>
+    <div id="editModal" class="modal">
 
-        <input type="text" id="editName" placeholder="Customer Name">
-        <input type="text" id="editPhone" placeholder="Phone Number">
+        <div class="modal-content">
 
-        <select id="editPaid">
-            <option value="Paid">Paid</option>
-            <option value="Not Paid">Not Paid</option>
-        </select>
+            <h2>Edit Customer</h2>
 
-        <button id="updateCustomer">Update</button>
-        <button id="checkoutCustomer">Check Out</button>
-        <button id="cancelEdit">Cancel</button>
+            <input
+                type="text"
+                id="editName"
+                placeholder="Customer Name">
+
+            <input
+                type="text"
+                id="editPhone"
+                placeholder="Phone Number">
+
+            <select id="editPaid">
+                <option value="Paid">Paid</option>
+                <option value="Not Paid">Not Paid</option>
+            </select>
+
+            <button id="updateCustomer">
+                Update
+            </button>
+
+            <button id="checkoutCustomer">
+                Check Out
+            </button>
+
+            <button id="cancelEdit">
+                Cancel
+            </button>
+
+        </div>
 
     </div>
 
-</div>
-</div>
-<div id="kpiModal" class="modal">
-    <div class="modal-content">
-        <h2 id="kpiTitle">Details</h2>
-        <div id="kpiList"></div>
-        <button onclick="closeKpi()">Close</button>
+    <!-- ========================= -->
+    <!-- KPI Modal -->
+    <!-- ========================= -->
+
+    <div id="kpiModal" class="modal">
+
+        <div class="modal-content">
+
+            <h2 id="kpiTitle">Details</h2>
+
+            <div id="kpiList"></div>
+
+            <button onclick="closeKpi()">
+                Close
+            </button>
+
+        </div>
+
     </div>
-</div>
+
+    <!-- ========================= -->
+    <!-- Payment History -->
+    <!-- ========================= -->
+
+<!-- =========================
+     Payment History
+========================= -->
+
+<!-- =========================
+     Payment History
+========================= -->
+
 <div id="historyModal" class="modal">
+
     <div class="history-box">
 
         <div class="history-header">
-            <h2>Payment History</h2>
-            <button onclick="closeHistory()">✖</button>
+
+            <div>
+                <h2>💳 Payment History</h2>
+                <small>All customer payment records</small>
+            </div>
+
+            <button class="close-btn" onclick="closeHistory()">✕</button>
+
         </div>
 
-        <div id="historyContainer"></div>
+        <div class="history-toolbar">
+
+            <input
+                type="text"
+                id="historySearch"
+                placeholder="🔍 Search customer...">
+
+        </div>
+
+        <div class="history-table-container">
+
+            <table class="history-table">
+
+                <tbody id="historyContainer">
+
+                    <!-- JavaScript سيضيف الصفوف هنا -->
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
+
 </div>
     <script src="Foyer.js"></script>
 
