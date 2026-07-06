@@ -213,8 +213,7 @@ FLOORS
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-
+grid-template-columns:repeat(auto-fill, minmax(450px, 1fr));
     gap:25px;
 
     align-items:start;
@@ -340,6 +339,17 @@ PAY BUTTON
     color:white;
 
 }
+/* العميل غير المدفوع */
+.unpaid-card{
+    background: linear-gradient(135deg,#991b1b,#dc2626) !important;
+    border:2px solid #ef4444;
+}
+
+/* العميل المدفوع */
+.paid-card{
+    background: linear-gradient(135deg,#166534,#15803d) !important;
+    border:2px solid #22c55e;
+}
 
 .paid-btn:hover{
 
@@ -394,36 +404,29 @@ MODAL
 ========================= */
 
 .modal{
-
     display:none;
-
     position:fixed;
-
     inset:0;
 
     background:rgba(0,0,0,.75);
-
     backdrop-filter:blur(8px);
 
     justify-content:center;
-
     align-items:center;
 
+    z-index:9999;
 }
 
 .modal-content{
-    margin: auto;
-    margin-top:120px ;
     width:360px;
-
     padding:25px;
 
     border-radius:20px;
 
     background:#101a2c;
-
     border:1px solid rgba(255,255,255,.08);
 
+    margin:0; /* احذف margin-top */
 }
 
 .modal-content input,
@@ -811,4 +814,47 @@ HISTORY
 .history-btn:hover{
     background:#2563eb;
     transform:translateY(-2px);
+}
+
+.confirm-box{
+    width:420px;
+    text-align:center;
+}
+
+.confirm-box h2{
+    margin-bottom:15px;
+    color:#f59e0b;
+}
+
+.confirm-box p{
+    color:#cbd5e1;
+    margin:20px 0 30px;
+    line-height:1.7;
+}
+
+.confirm-buttons{
+    display:flex;
+    gap:15px;
+}
+
+.confirm-buttons button{
+    flex:1;
+}
+
+.cancel-btn{
+    background:#334155;
+    color:white;
+}
+
+.cancel-btn:hover{
+    background:#475569;
+}
+
+.danger-btn{
+    background:#ef4444;
+    color:white;
+}
+
+.danger-btn:hover{
+    background:#dc2626;
 }
