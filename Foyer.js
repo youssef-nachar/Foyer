@@ -75,11 +75,27 @@ for (let floor = 1; floor <= floors; floor++) {
                 button.dataset.bedName = `Bed ${bed}`;
 
                 // CLICK
-                button.onclick = function () {
-                    selectedBed = button;
-                   modal.style.display = "flex";
-                };
+button.onclick = function () {
 
+    selectedBed = button;
+
+    const i = button.dataset.index;
+    const customer = customers[i];
+
+    // إذا فيه زبون → افتح edit
+    if (customer) {
+
+        document.getElementById("editName").value = customer.name;
+        document.getElementById("editPhone").value = customer.phone;
+        document.getElementById("editPaid").value = customer.paid;
+
+        editModal.style.display = "flex";
+        return;
+    }
+
+    // إذا فاضي → add new
+    modal.style.display = "flex";
+};
                 // RIGHT CLICK EDIT
                 button.oncontextmenu = function (e) {
                     e.preventDefault();
@@ -154,11 +170,13 @@ saveBtn.onclick = function () {
 // ======================
 // CANCEL MODAL
 // ======================
-cancelBtn.onclick = function () {
-    modal.style.display = "none";
-};
+document.addEventListener("DOMContentLoaded", function () {
 
-// ======================
+    document.getElementById("cancelEdit").addEventListener("click", function () {
+        editModal.style.display = "none";
+    });
+
+});
 // CHECKOUT
 // ======================
 checkoutBtn.onclick = function () {
@@ -719,3 +737,31 @@ function showHistory() {
 function closeHistory() {
     document.getElementById("historyModal").style.display = "none";
 }
+window.addEventListener("click", function (e) {
+
+    // إغلاق مودال الإضافة
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+
+    // إغلاق مودال التعديل
+    if (e.target === editModal) {
+        editModal.style.display = "none";
+    }
+
+    // إغلاق مودال التأكيد
+    if (e.target === confirmModal) {
+        confirmModal.style.display = "none";
+    }
+
+    // إغلاق KPI
+    if (e.target === kpiModal) {
+        kpiModal.style.display = "none";
+    }
+
+    // إغلاق التاريخ
+    const historyModal = document.getElementById("historyModal");
+    if (historyModal && e.target === historyModal) {
+        historyModal.style.display = "none";
+    }
+});
