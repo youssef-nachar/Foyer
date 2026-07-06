@@ -6,7 +6,7 @@ let paymentHistory = JSON.parse(localStorage.getItem("paymentHistory")) || {};
 const building = document.getElementById("building");
 
 const floors = 6;
-const apartments = 5;
+const apartments = 4;
 const rooms = 3;
 const beds = 2;
 
@@ -50,9 +50,13 @@ for (let floor = 1; floor <= floors; floor++) {
     for (let apartment = 1; apartment <= apartments; apartment++) {
 
         const apartmentDiv = document.createElement("div");
-        apartmentDiv.className = "apartment";
-        apartmentDiv.innerHTML = `<h3>Apartment ${apartment}</h3>`;
+apartmentDiv.className = "apartment";
 
+apartmentDiv.innerHTML = `
+    <div class="apartment-header">
+        🏢 Apartment ${apartment}
+    </div>
+`;
         for (let room = 1; room <= rooms; room++) {
 
             const roomDiv = document.createElement("div");
@@ -350,26 +354,70 @@ function showKpi(type) {
         const div = document.createElement("div");
         div.className = "kpi-item";
 
-        if (item.type === "available") {
+if (item.type === "available") {
 
-            div.innerHTML = `
-                🛏️ <b>Empty Bed</b><br>
-                🏢 Floor ${item.floor} | Apartment ${item.apartment}<br>
-                🚪 Room ${item.room} | Bed ${item.bed}
-            `;
+    div.innerHTML = `
+        <div class="kpi-title">🛏 Empty Bed</div>
 
-        } else {
+        <div class="kpi-row">
+            <span>Floor</span>
+            <b>${item.floor}</b>
+        </div>
 
-            div.innerHTML = `
-                🏢 Floor ${item.floor} | Apartment ${item.apartment}<br>
-                🚪 Room ${item.room} | Bed ${item.bed}<br><br>
+        <div class="kpi-row">
+            <span>Apartment</span>
+            <b>${item.apartment}</b>
+        </div>
 
-                👤 ${item.name}<br>
-                📞 ${item.phone || "-"}<br>
-                💰 ${item.paid || "-"}
-            `;
-        }
+        <div class="kpi-row">
+            <span>Room</span>
+            <b>${item.room}</b>
+        </div>
 
+        <div class="kpi-row">
+            <span>Bed</span>
+            <b>${item.bed}</b>
+        </div>
+    `;
+
+} else {
+
+    div.innerHTML = `
+        <div class="kpi-title">${item.name}</div>
+
+        <div class="kpi-row">
+            <span>Floor</span>
+            <b>${item.floor}</b>
+        </div>
+
+        <div class="kpi-row">
+            <span>Apartment</span>
+            <b>${item.apartment}</b>
+        </div>
+
+        <div class="kpi-row">
+            <span>Room</span>
+            <b>${item.room}</b>
+        </div>
+
+        <div class="kpi-row">
+            <span>Bed</span>
+            <b>${item.bed}</b>
+        </div>
+
+        <div class="kpi-row">
+            <span>Phone</span>
+            <b>${item.phone || "-"}</b>
+        </div>
+
+        <div class="kpi-row">
+            <span>Status</span>
+            <b style="color:${item.paid=="Paid" ? "#22c55e" : "#ef4444"}">
+                ${item.paid}
+            </b>
+        </div>
+    `;
+}
         kpiList.appendChild(div);
     });
 
@@ -481,6 +529,7 @@ function saveMonthlyPaidRecord() {
     localStorage.setItem("paymentHistory", JSON.stringify(paymentHistory));
 }
 function showHistory() {
+
     const modal = document.getElementById("historyModal");
     const container = document.getElementById("historyContainer");
 
@@ -489,39 +538,52 @@ function showHistory() {
     const months = Object.keys(paymentHistory).sort().reverse();
 
     if (months.length === 0) {
-        container.innerHTML = "<p>No payment history available.</p>";
+        container.innerHTML = "<p style='padding:15px;'>No payment history available.</p>";
         modal.style.display = "flex";
         return;
     }
 
     months.forEach(month => {
 
-        const monthBox = document.createElement("div");
-        monthBox.className = "history-month";
+        const monthTitle = document.createElement("div");
+        monthTitle.className = "history-month-title";
+        monthTitle.innerHTML = `📅 ${month}`;
 
-        const title = document.createElement("h3");
-        title.innerText = `📅 ${month}`;
+        const table = document.createElement("table");
+        table.className = "history-table";
 
-        const list = document.createElement("div");
-        list.className = "history-list";
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Floor</th>
+                    <th>Room</th>
+                    <th>Bed</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+
+        const tbody = table.querySelector("tbody");
 
         paymentHistory[month].forEach(c => {
 
-            const item = document.createElement("div");
-            item.className = "history-item";
+            const tr = document.createElement("tr");
 
-            item.innerHTML = `
-                <span class="name">👤 ${c.name}</span>
-                <span class="phone">📞 ${c.phone || "-"}</span>
+            tr.innerHTML = `
+                <td>👤 ${c.name}</td>
+                <td>📞 ${c.phone || "-"}</td>
+                <td>${c.floor || "-"}</td>
+                <td>${c.room || "-"}</td>
+                <td>${c.bed || "-"}</td>
             `;
 
-            list.appendChild(item);
+            tbody.appendChild(tr);
         });
 
-        monthBox.appendChild(title);
-        monthBox.appendChild(list);
-
-        container.appendChild(monthBox);
+        container.appendChild(monthTitle);
+        container.appendChild(table);
     });
 
     modal.style.display = "flex";
