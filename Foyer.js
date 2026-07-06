@@ -88,7 +88,7 @@ button.onclick = function () {
         document.getElementById("editName").value = customer.name;
         document.getElementById("editPhone").value = customer.phone;
         document.getElementById("editPaid").value = customer.paid;
-
+document.getElementById("editParentPhone").value = customer.parentPhone || "";
         editModal.style.display = "flex";
         return;
     }
@@ -133,9 +133,10 @@ button.onclick = function () {
 // SAVE CUSTOMER
 // ======================
 saveBtn.onclick = function () {
-
+const parentPhone = document.getElementById("customerParentPhone").value;
     const name = document.getElementById("customerName").value;
     const phone = document.getElementById("customerPhone").value;
+    const fileInput = document.getElementById("customerIdImage");
 
     if (!name) {
         alert("Enter customer name");
@@ -144,29 +145,60 @@ saveBtn.onclick = function () {
 
     const i = selectedBed.dataset.index;
 
-    customers[i] = {
-        name,
-        phone,
-        paid: "Unpaid",
-        date: new Date().toLocaleString()
-    };
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            customers[i] = {
+                name,
+                phone,
+                    parentPhone: "",   // 🔥 جديد
+
+                paid: "Unpaid",
+                date: new Date().toLocaleString(),
+                idImage: reader.result // 🔥 base64 image
+            };
+
+            finishSave(i);
+        };
+
+        reader.readAsDataURL(file);
+
+    } else {
+
+        customers[i] = {
+            name,
+            phone,
+                parentPhone,
+
+            paid: "Unpaid",
+            date: new Date().toLocaleString(),
+            idImage: null
+        };
+
+        finishSave(i);
+    }
+};
+function finishSave(i) {
 
     selectedBed.className = "occupied";
 
-    // const paidStatus = paid === "Paid" ? "Paid" : "Unpaid";
-
     updateBedUI(i);
     saveCustomers();
+
     selectedBed.style.pointerEvents = "auto";
 
     modal.style.display = "none";
 
     document.getElementById("customerName").value = "";
     document.getElementById("customerPhone").value = "";
+    document.getElementById("customerIdImage").value = "";
 
     updateDashboard();
-};
-
+}
 // ======================
 // CANCEL MODAL
 // ======================
@@ -206,7 +238,7 @@ updateBtn.onclick = function () {
     customers[i].name = document.getElementById("editName").value;
     customers[i].phone = document.getElementById("editPhone").value;
     customers[i].paid = document.getElementById("editPaid").value;
-
+customers[i].parentPhone = document.getElementById("editParentPhone").value;
     updateBedUI(i);
     editModal.style.display = "none";
 
@@ -328,17 +360,18 @@ function updateBedUI(index) {
 
     if (!button || !c) return;
 
-if (c.paid === "Unpaid") {
-    button.className = "occupied unpaid-card";
-} else {
-    button.className = "occupied paid-card";
-}
-    button.innerHTML = `
-        <b>${c.name}</b><br>
-        ${c.phone}<br>
-        ${c.date}<br>
-    `;
+    button.className =
+        c.paid === "Unpaid"
+            ? "occupied unpaid-card"
+            : "occupied paid-card";
 
+button.innerHTML = `
+    ${c.idImage ? `<img src="${c.idImage}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">` : ""}
+    <b>${c.name}</b><br>
+    ${c.phone || "-"}<br>
+    Parent: ${c.parentPhone || "-"}<br>
+    ${c.date}<br>
+`;
     button.appendChild(createPaidButton(index));
 }
 const kpiModal = document.getElementById("kpiModal");
@@ -765,3 +798,11 @@ window.addEventListener("click", function (e) {
         historyModal.style.display = "none";
     }
 });
+cancelBtn.onclick = function () {
+    modal.style.display = "none";
+
+    // تنظيف الحقول
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("customerIdImage").value = "";
+};
