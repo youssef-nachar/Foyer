@@ -13,6 +13,23 @@
     <header>
         <h1>🏢 Building Management System</h1>
     </header>
+<div class="tabs">
+
+    <button
+        class="tab-btn active"
+        onclick="openTab('residents')">
+        🏠 Residents
+    </button>
+
+    <button
+        class="tab-btn"
+        onclick="openTab('finance')">
+        💰 Finance
+    </button>
+
+</div>
+    <!-- Dashboard -->
+   <div id="residentsPage">
 
     <!-- Dashboard -->
     <section class="dashboard">
@@ -37,17 +54,24 @@
             <span id="unpaidCustomers">0</span>
         </div>
 
+        <div class="card">
+            <h3>Revenue</h3>
+            <h2 id="revenue">$0</h2>
+        </div>
+
     </section>
+
 
     <!-- Search + Actions -->
     <section class="top-bar">
 
         <div class="search-box">
             <input
-                id="searchInput"
-                type="text"
-                placeholder="Search by customer, floor, apartment, room or bed...">
+            id="searchInput"
+            type="text"
+            placeholder="Search by customer, floor, apartment, room or bed...">
         </div>
+
 
         <button class="history-btn" onclick="showHistory()">
             📄 Payment History
@@ -55,9 +79,72 @@
 
     </section>
 
-    <!-- Building -->
+
     <main id="building"></main>
 
+</div>
+<div id="financePage" style="display:none;">
+
+    <div class="finance-container">
+
+        <h2>💰 Finance Dashboard</h2>
+
+        <div class="finance-summary">
+
+            <div class="finance-card">
+                <h3>Revenue</h3>
+                <h1 id="financeRevenue">$0</h1>
+            </div>
+
+            <div class="finance-card">
+                <h3>Expenses</h3>
+                <h1 id="financeExpenses">$0</h1>
+            </div>
+
+            <div class="finance-card">
+                <h3>Profit</h3>
+                <h1 id="financeProfit">$0</h1>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h3>Expenses</h3>
+
+        <button id="addExpenseBtn">
+            ➕ Add Expense
+        </button>
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Category</th>
+
+                    <th>Description</th>
+
+                    <th>Amount</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="expenseTableBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
     <!-- ========================= -->
     <!-- Add Customer -->
     <!-- ========================= -->
@@ -225,6 +312,36 @@
         </div>
 
     </div>
+</div>
+<div id="expenseModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Add Expense</h2>
+
+        <input
+            id="expenseCategory"
+            placeholder="Category">
+
+        <input
+            id="expenseDescription"
+            placeholder="Description">
+
+        <input
+            id="expenseAmount"
+            type="number"
+            placeholder="Amount">
+
+        <button id="saveExpense">
+            Save
+        </button>
+
+        <button id="cancelExpense">
+            Cancel
+        </button>
+
+    </div>
+
 </div>
     <script src="Foyer.js"></script>
 
