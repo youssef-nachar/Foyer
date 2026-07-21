@@ -9,9 +9,13 @@ const floors = 6;
 const apartments = 4;
 const rooms = 3;
 const beds = 2;
+// ======================
+// EXPENSE STATE
+// ======================
 
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 const totalBeds = floors * apartments * rooms * beds;
-
+const MONTHLY_RENT = 235;
 // ======================
 // STATE
 // ======================
@@ -214,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
 checkoutBtn.onclick = function () {
 
     const i = selectedBed.dataset.index;
-
+customers[i].checkOut = new Date().toLocaleDateString();
     customers[i] = null;
     saveCustomers();
     selectedBed.className = "available";
@@ -254,6 +258,7 @@ function updateDashboard() {
     let occupied = 0;
     let paid = 0;
     let unpaid = 0;
+    let revenue = 0;
 
     for (let i = 0; i < customers.length; i++) {
 
@@ -262,8 +267,12 @@ function updateDashboard() {
         if (c) {
             occupied++;
 
-            if (c.paid === "Paid") paid++;
-            else unpaid++;
+            if (c.paid === "Paid") {
+                paid++;
+                revenue += MONTHLY_RENT;
+            } else {
+                unpaid++;
+            }
         }
     }
 
@@ -271,6 +280,10 @@ function updateDashboard() {
     document.getElementById("availableBeds").innerText = totalBeds - occupied;
     document.getElementById("paidCustomers").innerText = paid;
     document.getElementById("unpaidCustomers").innerText = unpaid;
+
+    // KPI الجديد
+    document.getElementById("revenue").innerText = `$${revenue}`;
+    updateFinanceDashboard();
 }
 
 // ======================
@@ -662,14 +675,23 @@ function loadCustomers() {
     updateDashboard();
 }
 window.onload = function () {
+
     loadCustomers();
+
     resetMonthlyPayments();
+
     updateDashboard();
+
+    if(expenseTableBody){
+        renderExpenses();
+    }
+    updateFinanceDashboard();
+
 };
 function saveMonthlyPaidRecord() {
 
     const now = new Date();
-    const key = `${now.getFullYear()}-${now.getMonth()}`;
+    const key = `${now.getFullYear()}-${now.getMonth() + 1}`;
 
     const paidCustomers = [];
 
@@ -721,8 +743,16 @@ function showHistory() {
     months.forEach(month => {
 
         const monthTitle = document.createElement("div");
-        monthTitle.className = "history-month-title";
-        monthTitle.innerHTML = `📅 ${month}`;
+monthTitle.className = "history-month-title";
+
+monthTitle.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span>📅 ${month}</span>
+        <button class="delete-history-btn" onclick="deleteHistory('${month}')">
+            🗑 Delete
+        </button>
+    </div>
+`;
 
         const table = document.createElement("table");
         table.className = "history-table";
@@ -770,6 +800,23 @@ function showHistory() {
 function closeHistory() {
     document.getElementById("historyModal").style.display = "none";
 }
+function deleteHistory(month) {
+
+    showConfirm(
+        `Are you sure you want to delete payment history for ${month}?`,
+        function () {
+
+            delete paymentHistory[month];
+
+            localStorage.setItem(
+                "paymentHistory",
+                JSON.stringify(paymentHistory)
+            );
+
+            showHistory(); // إعادة تحديث النافذة
+        }
+    );
+}
 window.addEventListener("click", function (e) {
 
     // إغلاق مودال الإضافة
@@ -799,6 +846,7 @@ window.addEventListener("click", function (e) {
     }
 });
 cancelBtn.onclick = function () {
+  
     modal.style.display = "none";
 
     // تنظيف الحقول
@@ -806,3 +854,266 @@ cancelBtn.onclick = function () {
     document.getElementById("customerPhone").value = "";
     document.getElementById("customerIdImage").value = "";
 };
+function openTab(tab){
+
+    const residents = document.getElementById("residentsPage");
+    const finance = document.getElementById("financePage");
+
+    const buttons = document.querySelectorAll(".tab-btn");
+
+
+    if(tab === "residents"){
+
+        residents.style.display = "block";
+        finance.style.display = "none";
+
+        buttons[0].classList.add("active");
+        buttons[1].classList.remove("active");
+
+    }
+
+
+    if(tab === "finance"){
+
+        residents.style.display = "none";
+        finance.style.display = "block";
+
+        buttons[1].classList.add("active");
+        buttons[0].classList.remove("active");
+
+    }
+
+}
+// ======================
+// FINANCE ELEMENTS
+// ======================
+
+const expenseModal = document.getElementById("expenseModal");
+const addExpenseBtn = document.getElementById("addExpenseBtn");
+const saveExpenseBtn = document.getElementById("saveExpense");
+const cancelExpenseBtn = document.getElementById("cancelExpense");
+const expenseTableBody = document.getElementById("expenseTableBody");
+// OPEN EXPENSE MODAL
+
+addExpenseBtn.onclick = function(){
+
+    expenseModal.style.display="flex";
+
+};
+cancelExpenseBtn.onclick=function(){
+
+    expenseModal.style.display="none";
+
+
+    document.getElementById("expenseCategory").value="";
+    document.getElementById("expenseDescription").value="";
+    document.getElementById("expenseAmount").value="";
+
+};
+saveExpenseBtn.onclick=function(){
+
+    const category =
+    document.getElementById("expenseCategory").value;
+
+
+    const description =
+    document.getElementById("expenseDescription").value;
+
+
+    const amount =
+    Number(document.getElementById("expenseAmount").value);
+
+
+
+    if(!category || !amount){
+
+        alert("Please enter category and amount");
+
+        return;
+
+    }
+
+
+
+    const expense={
+
+        id:Date.now(),
+
+        date:new Date().toLocaleDateString(),
+
+        category,
+
+        description,
+
+        amount
+
+    };
+
+
+
+    expenses.push(expense);
+
+
+
+    saveExpenses();
+
+
+
+    renderExpenses();
+
+
+
+    expenseModal.style.display="none";
+
+
+
+    document.getElementById("expenseCategory").value="";
+
+    document.getElementById("expenseDescription").value="";
+
+    document.getElementById("expenseAmount").value="";
+
+
+};
+function saveExpenses(){
+
+    localStorage.setItem(
+        "expenses",
+        JSON.stringify(expenses)
+    );
+
+}
+function renderExpenses(){
+
+
+    expenseTableBody.innerHTML="";
+
+
+
+    expenses.forEach(expense=>{
+
+
+        const row=document.createElement("tr");
+
+
+        row.innerHTML=`
+
+        <td>${expense.date}</td>
+
+        <td>${expense.category}</td>
+
+        <td>${expense.description || "-"}</td>
+
+        <td>$${expense.amount}</td>
+
+
+        <td>
+
+        <button
+        onclick="deleteExpense(${expense.id})"
+        style="
+        background:#ef4444;
+        color:white;
+        border:none;
+        padding:6px 10px;
+        border-radius:6px;
+        cursor:pointer;">
+        
+        Delete
+        
+        </button>
+
+
+        </td>
+
+
+        `;
+
+
+        expenseTableBody.appendChild(row);
+
+
+    });
+
+updateFinanceDashboard();
+}
+function updateFinanceDashboard(){
+
+    // الإيرادات
+    let revenue = 0;
+
+    customers.forEach(c=>{
+
+        if(c && c.paid==="Paid"){
+
+            revenue += MONTHLY_RENT;
+
+        }
+
+    });
+
+
+    // المصاريف
+    let expensesTotal = 0;
+
+    expenses.forEach(e=>{
+
+        expensesTotal += Number(e.amount);
+
+    });
+
+
+    // الربح
+    const profit = revenue - expensesTotal;
+
+
+    document.getElementById("financeRevenue").innerHTML =
+        "$" + revenue;
+
+    document.getElementById("financeExpenses").innerHTML =
+        "$" + expensesTotal;
+
+    const profitBox =
+        document.getElementById("financeProfit");
+
+    if(profit >= 0){
+
+        profitBox.innerHTML =
+            "🟢 $" + profit;
+
+        profitBox.style.color="#22c55e";
+
+    }else{
+
+        profitBox.innerHTML =
+            "🔴 -$" + Math.abs(profit);
+
+        profitBox.style.color="#ef4444";
+
+    }
+
+}
+function deleteExpense(id){
+
+
+    showConfirm(
+        "Delete this expense?",
+        function(){
+
+
+            expenses =
+            expenses.filter(e=>e.id !== id);
+
+
+
+            saveExpenses();
+
+
+            renderExpenses();
+
+
+        }
+    );
+
+
+}
