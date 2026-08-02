@@ -4,11 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building Management System</title>
-
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="Foyer.css">
 </head>
 <body>
+<!-- ==========================
+LOGIN PAGE
+========================== -->
 
+<div id="loginPage" class="login-page">
+
+    <div class="login-box">
+
+        <!-- Logo -->
+        <div class="login-logo">
+            🏢
+        </div>
+
+        <!-- Title -->
+        <h1>Building Manager</h1>
+
+        <p>
+            Resident & Finance Management System
+        </p>
+
+        <!-- Username -->
+        <div class="input-group">
+
+            <label>
+                Username
+            </label>
+
+            <input
+                id="loginUser"
+                type="text"
+                placeholder="Enter Username"
+                autocomplete="username">
+
+        </div>
+
+        <!-- Password -->
+     <div class="input-group">
+    <label>Password</label>
+
+    <div class="password-box">
+        <input
+            id="loginPass"
+            type="password"
+            placeholder="Enter Password"
+            autocomplete="current-password">
+
+        <button type="button" class="toggle-password" onclick="togglePassword()">
+    <i id="eyeIcon" class="fa-regular fa-eye"></i>
+</button>
+    </div>
+</div>
+
+        <!-- Remember -->
+
+        <div class="login-options">
+
+            <label class="remember">
+
+                <input type="checkbox">
+
+                <span>Remember Me</span>
+
+            </label>
+
+        </div>
+
+        <!-- Login Button -->
+
+        <button
+            class="login-btn"
+            onclick="login()">
+
+            🔐 Sign In
+
+        </button>
+
+        <!-- Error -->
+
+        <div id="loginError"></div>
+
+        <!-- Footer -->
+
+        <div class="login-footer">
+
+            Building Management System
+
+            <br>
+
+            Version 2026
+
+        </div>
+
+    </div>
+
+</div>
     <!-- Header -->
     <header>
         <h1>🏢 Building Management System</h1>
@@ -342,6 +437,7 @@
 
     </div>
 
+</div>
 </div>
     <script src="Foyer.js"></script>
 
