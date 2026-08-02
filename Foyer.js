@@ -132,7 +132,47 @@ document.getElementById("editParentPhone").value = customer.parentPhone || "";
     floorDiv.appendChild(apartmentContainer);
     building.appendChild(floorDiv);
 }
+function login(){
 
+    const user = document.getElementById("loginUser").value;
+
+    const pass = document.getElementById("loginPass").value;
+
+    if(user==="admin" && pass==="1234"){
+
+        document.getElementById("loginPage").style.display="none";
+
+        document.getElementById("appContent").style.display="block";
+
+    }else{
+
+        document.getElementById("loginError").innerHTML="❌ Wrong Username or Password";
+
+    }
+
+}
+
+document.getElementById("loginPass").addEventListener("keypress",function(e){
+
+    if(e.key==="Enter"){
+
+        login();
+
+    }
+
+});
+function togglePassword() {
+    const input = document.getElementById("loginPass");
+    const icon = document.getElementById("eyeIcon");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+}
 // ======================
 // SAVE CUSTOMER
 // ======================
