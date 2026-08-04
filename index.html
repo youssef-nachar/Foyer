@@ -4,441 +4,435 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building Management System</title>
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Foyer.css">
 </head>
 <body>
-<!-- ==========================
-LOGIN PAGE
-========================== -->
 
-<div id="loginPage" class="login-page">
+    <!-- ==========================
+         LOGIN PAGE
+    ========================== -->
+    <div id="loginPage" class="login-page">
 
-    <div class="login-box">
+        <div class="login-box">
 
-        <!-- Logo -->
-        <div class="login-logo">
-            🏢
-        </div>
-
-        <!-- Title -->
-        <h1>Building Manager</h1>
-
-        <p>
-            Resident & Finance Management System
-        </p>
-
-        <!-- Username -->
-        <div class="input-group">
-
-            <label>
-                Username
-            </label>
-
-            <input
-                id="loginUser"
-                type="text"
-                placeholder="Enter Username"
-                autocomplete="username">
-
-        </div>
-
-        <!-- Password -->
-     <div class="input-group">
-    <label>Password</label>
-
-    <div class="password-box">
-        <input
-            id="loginPass"
-            type="password"
-            placeholder="Enter Password"
-            autocomplete="current-password">
-
-        <button type="button" class="toggle-password" onclick="togglePassword()">
-    <i id="eyeIcon" class="fa-regular fa-eye"></i>
-</button>
-    </div>
-</div>
-
-        <!-- Remember -->
-
-        <div class="login-options">
-
-            <label class="remember">
-
-                <input type="checkbox">
-
-                <span>Remember Me</span>
-
-            </label>
-
-        </div>
-
-        <!-- Login Button -->
-
-        <button
-            class="login-btn"
-            onclick="login()">
-
-            🔐 Sign In
-
-        </button>
-
-        <!-- Error -->
-
-        <div id="loginError"></div>
-
-        <!-- Footer -->
-
-        <div class="login-footer">
-
-            Building Management System
-
-            <br>
-
-            Version 2026
-
-        </div>
-
-    </div>
-
-</div>
-    <!-- Header -->
-    <header>
-        <h1>🏢 Building Management System</h1>
-    </header>
-<div class="tabs">
-
-    <button
-        class="tab-btn active"
-        onclick="openTab('residents')">
-        🏠 Residents
-    </button>
-
-    <button
-        class="tab-btn"
-        onclick="openTab('finance')">
-        💰 Finance
-    </button>
-
-</div>
-    <!-- Dashboard -->
-   <div id="residentsPage">
-
-    <!-- Dashboard -->
-    <section class="dashboard">
-
-        <div class="card" onclick="showKpi('occupied')">
-            <h3>Occupied</h3>
-            <span id="occupiedBeds">0</span>
-        </div>
-
-        <div class="card" onclick="showKpi('available')">
-            <h3>Available</h3>
-            <span id="availableBeds">0</span>
-        </div>
-
-        <div class="card" onclick="showKpi('paid')">
-            <h3>Paid</h3>
-            <span id="paidCustomers">0</span>
-        </div>
-
-        <div class="card" onclick="showKpi('unpaid')">
-            <h3>Unpaid</h3>
-            <span id="unpaidCustomers">0</span>
-        </div>
-
-        <div class="card">
-            <h3>Revenue</h3>
-            <h2 id="revenue">$0</h2>
-        </div>
-
-    </section>
-
-
-    <!-- Search + Actions -->
-    <section class="top-bar">
-
-        <div class="search-box">
-            <input
-            id="searchInput"
-            type="text"
-            placeholder="Search by customer, floor, apartment, room or bed...">
-        </div>
-
-
-        <button class="history-btn" onclick="showHistory()">
-            📄 Payment History
-        </button>
-
-    </section>
-
-
-    <main id="building"></main>
-
-</div>
-<div id="financePage" style="display:none;">
-
-    <div class="finance-container">
-
-        <h2>💰 Finance Dashboard</h2>
-
-        <div class="finance-summary">
-
-            <div class="finance-card">
-                <h3>Revenue</h3>
-                <h1 id="financeRevenue">$0</h1>
+            <!-- Logo -->
+            <div class="login-logo">
+                🏢
             </div>
 
-            <div class="finance-card">
+            <!-- Title -->
+            <h1>Building Manager</h1>
+
+            <p>
+                Resident & Finance Management System
+            </p>
+
+            <!-- Username -->
+            <div class="input-group">
+                <label>Username</label>
+                <input
+                    id="loginUser"
+                    type="text"
+                    placeholder="Enter Username"
+                    autocomplete="username">
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <label>Password</label>
+                <div class="password-box">
+                    <input
+                        id="loginPass"
+                        type="password"
+                        placeholder="Enter Password"
+                        autocomplete="current-password">
+
+                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                        <i id="eyeIcon" class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Remember -->
+            <div class="login-options">
+                <label class="remember">
+                    <input type="checkbox">
+                    <span>Remember Me</span>
+                </label>
+            </div>
+
+            <!-- Login Button -->
+            <button class="login-btn" onclick="login()">
+                🔐 Sign In
+            </button>
+
+            <!-- Error -->
+            <div id="loginError"></div>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                Building Management System
+                <br>
+                Version 2026
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================
+         MAIN APPLICATION CONTENT
+         (مخفي في البداية بكلاس hidden)
+    ========================== -->
+    <div id="appContent" class="hidden">
+
+        <!-- Header -->
+<!-- Header with SVG Logout Button -->
+<header class="main-header">
+    <div class="brand-title">
+        <span class="brand-icon">🏢</span>
+        <h1>Building Management System</h1>
+    </div>
+    
+    <button onclick="logout()" class="logout-btn" title="Sign out of your account">
+        <!-- SVG Logout Icon -->
+        <svg class="logout-svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>Logout</span>
+    </button>
+</header>
+
+
+
+        <div class="tabs">
+            <button
+                class="tab-btn active"
+                onclick="openTab('residents')">
+                🏠 Residents
+            </button>
+
+            <button
+                class="tab-btn"
+                onclick="openTab('finance')">
+                💰 Finance
+            </button>
+
+            <button
+                class="tab-btn"
+                onclick="openTab('paidClients')">
+                Paid Clients
+            </button>
+        </div>
+
+        <!-- Dashboard / Residents Page -->
+        <div id="residentsPage">
+
+            <!-- Dashboard -->
+            <section class="dashboard">
+
+                <div class="card" onclick="showKpi('occupied')">
+                    <h3>Occupied</h3>
+                    <span id="occupiedBeds">0</span>
+                </div>
+
+                <div class="card" onclick="showKpi('available')">
+                    <h3>Available</h3>
+                    <span id="availableBeds">0</span>
+                </div>
+
+                <div class="card" onclick="showKpi('paid')">
+                    <h3>Paid</h3>
+                    <span id="paidCustomers">0</span>
+                </div>
+
+                <div class="card" onclick="showKpi('unpaid')">
+                    <h3>Unpaid</h3>
+                    <span id="unpaidCustomers">0</span>
+                </div>
+
+                <div class="card">
+                    <h3>Revenue</h3>
+                    <h2 id="revenue">$0</h2>
+                </div>
+
+            </section>
+
+            <!-- Search + Actions -->
+            <section class="top-bar">
+
+                <div class="search-box">
+                    <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="Search by customer, floor, apartment, room or bed...">
+                </div>
+
+                <button class="history-btn" onclick="showHistory()">
+                    📄 Payment History
+                </button>
+
+            </section>
+
+            <main id="building"></main>
+
+        </div>
+
+        <!-- Finance Page -->
+        <div id="financePage" style="display:none;">
+
+            <div class="finance-container">
+
+                <h2>💰 Finance Dashboard</h2>
+
+                <div class="finance-summary">
+
+                    <div class="finance-card">
+                        <h3>Revenue</h3>
+                        <h1 id="financeRevenue">$0</h1>
+                    </div>
+
+                    <div class="finance-card">
+                        <h3>Expenses</h3>
+                        <h1 id="financeExpenses">$0</h1>
+                    </div>
+
+                    <div class="finance-card">
+                        <h3>Profit</h3>
+                        <h1 id="financeProfit">$0</h1>
+                    </div>
+
+                </div>
+
+                <hr>
+
                 <h3>Expenses</h3>
-                <h1 id="financeExpenses">$0</h1>
+
+                <button id="addExpenseBtn">
+                    ➕ Add Expense
+                </button>
+
+                <table class="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseTableBody"></tbody>
+                </table>
+
             </div>
 
-            <div class="finance-card">
-                <h3>Profit</h3>
-                <h1 id="financeProfit">$0</h1>
+        </div>
+
+        <!-- Paid Clients Page -->
+        <!-- Paid Clients Page -->
+<!-- Paid Clients Page (Enterprise Edition) -->
+<div id="paidClientsPage" style="display:none;">
+
+    <div class="finance-container paid-enterprise-container">
+
+        <!-- Top Header & Export Toolbar -->
+        <div class="paid-header">
+            <div class="paid-title-group">
+                <div class="status-indicator-dot"></div>
+                <div>
+                    <h2>Paid Clients Directory</h2>
+                    <p class="paid-subtitle">Real-time overview of active tenants with verified monthly settlements</p>
+                </div>
             </div>
 
+            <div class="export-actions-group">
+                <button class="btn-secondary-export" onclick="exportPaidToCSV()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Export CSV</span>
+                </button>
+                <button class="btn-primary-print" onclick="window.print()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    <span>Print Report</span>
+                </button>
+            </div>
         </div>
 
-        <hr>
-
-        <h3>Expenses</h3>
-
-        <button id="addExpenseBtn">
-            ➕ Add Expense
-        </button>
-
-        <table class="expense-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>Date</th>
-
-                    <th>Category</th>
-
-                    <th>Description</th>
-
-                    <th>Amount</th>
-
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="expenseTableBody">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-    <!-- ========================= -->
-    <!-- Add Customer -->
-    <!-- ========================= -->
-
-    <div id="customerModal" class="modal">
-
-        <div class="modal-content">
-
-            <h2>Add Customer</h2>
-
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Customer Name">
-
-            <input
-                type="text"
-                id="customerPhone"
-                placeholder="Phone Number">
-             <input type="text" id="customerParentPhone" placeholder="Parent Phone Number">
-<input type="file" id="customerIdImage" accept="image/*">
-            <button id="saveCustomer">
-                Save
-            </button>
-
-            <button id="cancelCustomer">
-                Cancel
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- ========================= -->
-    <!-- Edit Customer -->
-    <!-- ========================= -->
-
-    <div id="editModal" class="modal">
-
-        <div class="modal-content">
-
-            <h2>Edit Customer</h2>
-
-            <input
-                type="text"
-                id="editName"
-                placeholder="Customer Name">
-
-            <input
-                type="text"
-                id="editPhone"
-                placeholder="Phone Number">
-<input type="text" id="editParentPhone" placeholder="Parent Phone Number">
-            <select id="editPaid">
-                <option value="Paid">Paid</option>
-                <option value="Not Paid">Not Paid</option>
-            </select>
-
-            <button id="updateCustomer">
-                Update
-            </button>
-
-            <button id="checkoutCustomer">
-                Check Out
-            </button>
-
-            <button id="cancelEdit">
-                Cancel
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- ========================= -->
-    <!-- KPI Modal -->
-    <!-- ========================= -->
-
-    <div id="kpiModal" class="modal">
-
-        <div class="modal-content">
-
-            <h2 id="kpiTitle">Details</h2>
-
-            <div id="kpiList"></div>
-
-            <button onclick="closeKpi()">
-                Close
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- ========================= -->
-    <!-- Payment History -->
-    <!-- ========================= -->
-
-<!-- =========================
-     Payment History
-========================= -->
-
-<!-- =========================
-     Payment History
-========================= -->
-
-<div id="historyModal" class="modal">
-
-    <div class="history-box">
-
-        <div class="history-header">
-
-            <div>
-                <h2>💳 Payment History</h2>
-                <small>All customer payment records</small>
+        <!-- KPI Metrics Grid -->
+        <div class="paid-kpi-grid">
+            <div class="paid-kpi-card">
+                <div class="kpi-icon-wrapper green-bg">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="kpi-details">
+                    <span class="kpi-label">Paid Tenants</span>
+                    <h1 id="paidClientsCount" class="kpi-value">0</h1>
+                </div>
             </div>
 
-            <button class="close-btn" onclick="closeHistory()">✕</button>
+            <div class="paid-kpi-card">
+                <div class="kpi-icon-wrapper emerald-bg">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="kpi-details">
+                    <span class="kpi-label">Collected Revenue</span>
+                    <h1 id="paidClientsTotalRev" class="kpi-value text-emerald">$0</h1>
+                </div>
+            </div>
 
+            <div class="paid-kpi-card">
+                <div class="kpi-icon-wrapper blue-bg">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="kpi-details">
+                    <span class="kpi-label">Settlement Rate</span>
+                    <h1 id="paidRatePercentage" class="kpi-value">0%</h1>
+                </div>
+            </div>
         </div>
 
-        <div class="history-toolbar">
+        <!-- Search & Advanced Filter Toolbar -->
+        <div class="paid-filter-toolbar">
+            <div class="paid-search-input-wrapper">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input
+                    id="paidSearchInput"
+                    type="text"
+                    placeholder="Search by tenant name, phone, floor, or room..."
+                    oninput="filterPaidClients()">
+            </div>
 
-            <input
-                type="text"
-                id="historySearch"
-                placeholder="🔍 Search customer...">
-
+            <div class="floor-filter-select-wrapper">
+                <select id="paidFloorFilter" onchange="filterPaidClients()">
+                    <option value="all">All Floors</option>
+                    <option value="1">Floor 1</option>
+                    <option value="2">Floor 2</option>
+                    <option value="3">Floor 3</option>
+                    <option value="4">Floor 4</option>
+                    <option value="5">Floor 5</option>
+                    <option value="6">Floor 6</option>
+                </select>
+            </div>
         </div>
 
-        <div class="history-table-container">
-
-            <table class="history-table">
-
-                <tbody id="historyContainer">
-
-                    <!-- JavaScript سيضيف الصفوف هنا -->
-
-                </tbody>
-
+        <!-- Modern Table Wrapper -->
+        <div class="paid-table-card">
+            <table class="paid-table">
+                <thead>
+                    <tr>
+                        <th>Client Details</th>
+                        <th>Contact Phone</th>
+                        <th>Parent Contact</th>
+                        <th>Location</th>
+                        <th>Bed No.</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="paidClientsBody"></tbody>
             </table>
-
         </div>
 
     </div>
 
 </div>
-<div id="confirmModal" class="modal">
-    <div class="modal-content confirm-box">
 
-        <h2>⚠️ Confirmation</h2>
 
-        <p id="confirmText">
-            Are you sure you want to change this customer to Unpaid?
-        </p>
+        <!-- ========================= -->
+        <!-- MODALS                    -->
+        <!-- ========================= -->
 
-        <div class="confirm-buttons">
-            <button id="confirmCancel" class="cancel-btn">
-                Cancel
-            </button>
+        <!-- Add Customer Modal -->
+        <div id="customerModal" class="modal">
+            <div class="modal-content">
+                <h2>Add Customer</h2>
+                <input type="text" id="customerName" placeholder="Customer Name">
+                <input type="text" id="customerPhone" placeholder="Phone Number">
+                <input type="text" id="customerParentPhone" placeholder="Parent Phone Number">
+                <input type="file" id="customerIdImage" accept="image/*">
+                <button id="saveCustomer">Save</button>
+                <button id="cancelCustomer">Cancel</button>
+            </div>
+        </div>
 
-            <button id="confirmOk" class="danger-btn">
-                Yes, Change
-            </button>
+        <!-- Edit Customer Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <h2>Edit Customer</h2>
+                <input type="text" id="editName" placeholder="Customer Name">
+                <input type="text" id="editPhone" placeholder="Phone Number">
+                <input type="text" id="editParentPhone" placeholder="Parent Phone Number">
+                <select id="editPaid">
+                    <option value="Paid">Paid</option>
+                    <option value="Not Paid">Not Paid</option>
+                </select>
+                <button id="updateCustomer">Update</button>
+                <button id="checkoutCustomer">Check Out</button>
+                <button id="cancelEdit">Cancel</button>
+            </div>
+        </div>
+
+        <!-- KPI Modal -->
+        <div id="kpiModal" class="modal">
+            <div class="modal-content">
+                <h2 id="kpiTitle">Details</h2>
+                <div id="kpiList"></div>
+                <button onclick="closeKpi()">Close</button>
+            </div>
+        </div>
+
+        <!-- Payment History Modal -->
+        <div id="historyModal" class="modal">
+            <div class="history-box">
+                <div class="history-header">
+                    <div>
+                        <h2>💳 Payment History</h2>
+                        <small>All customer payment records</small>
+                    </div>
+                    <button class="close-btn" onclick="closeHistory()">✕</button>
+                </div>
+                <div class="history-toolbar">
+                    <input type="text" id="historySearch" placeholder="🔍 Search customer...">
+                </div>
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <tbody id="historyContainer"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Modal -->
+        <div id="confirmModal" class="modal">
+            <div class="modal-content confirm-box">
+                <h2>⚠️ Confirmation</h2>
+                <p id="confirmText">
+                    Are you sure you want to change this customer to Unpaid?
+                </p>
+                <div class="confirm-buttons">
+                    <button id="confirmCancel" class="cancel-btn">Cancel</button>
+                    <button id="confirmOk" class="danger-btn">Yes, Change</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expense Modal -->
+        <div id="expenseModal" class="modal">
+            <div class="modal-content">
+                <h2>Add Expense</h2>
+                <input id="expenseCategory" placeholder="Category">
+                <input id="expenseDescription" placeholder="Description">
+                <input id="expenseAmount" type="number" placeholder="Amount">
+                <button id="saveExpense">Save</button>
+                <button id="cancelExpense">Cancel</button>
+            </div>
         </div>
 
     </div>
-</div>
-<div id="expenseModal" class="modal">
 
-    <div class="modal-content">
-
-        <h2>Add Expense</h2>
-
-        <input
-            id="expenseCategory"
-            placeholder="Category">
-
-        <input
-            id="expenseDescription"
-            placeholder="Description">
-
-        <input
-            id="expenseAmount"
-            type="number"
-            placeholder="Amount">
-
-        <button id="saveExpense">
-            Save
-        </button>
-
-        <button id="cancelExpense">
-            Cancel
-        </button>
-
-    </div>
-
-</div>
-</div>
     <script src="Foyer.js"></script>
 
 </body>
