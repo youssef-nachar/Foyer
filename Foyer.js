@@ -1,6 +1,6 @@
-// ======================
+// ==========================================
 // CONFIG & INITIALIZATION
-// ======================
+// ==========================================
 let paymentHistory = JSON.parse(localStorage.getItem("paymentHistory")) || {};
 const building = document.getElementById("building");
 
@@ -11,14 +11,28 @@ const beds = 2;
 const totalBeds = floors * apartments * rooms * beds;
 const MONTHLY_RENT = 235;
 
-// ======================
-// EXPENSE STATE
-// ======================
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+// ==========================================
+// EXPENSE STATE (LOAD FROM LOCALSTORAGE)
+// ==========================================
+let expenses = JSON.parse(localStorage.getItem("bms_expenses")) || [
+    { id: 1, date: '2026-08-01', category: 'Maintenance', description: 'Elevator Maintenance Service', amount: 150.00 },
+    { id: 2, date: '2026-08-02', category: 'Utilities', description: 'Main Building Electricity Bill', amount: 420.50 },
+    { id: 3, date: '2026-08-03', category: 'Cleaning', description: 'Cleaning Supplies & Detergents', amount: 65.00 }
+];
 
-// ======================
+// Helper to persist expenses
+function saveExpensesToStorage() {
+    localStorage.setItem("bms_expenses", JSON.stringify(expenses));
+}
+
+// Helper: Format Currency Standard
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+}
+
+// ==========================================
 // CUSTOMER STATE
-// ======================
+// ==========================================
 let customers = JSON.parse(localStorage.getItem("customers"));
 
 if (!customers) {
@@ -46,9 +60,9 @@ const saveExpenseBtn = document.getElementById("saveExpense");
 const cancelExpenseBtn = document.getElementById("cancelExpense");
 const expenseTableBody = document.getElementById("expenseTableBody");
 
-// ======================
+// ==========================================
 // BUILD UI (BUILDING GRID)
-// ======================
+// ==========================================
 let index = 0;
 
 for (let floor = 1; floor <= floors; floor++) {
@@ -131,30 +145,22 @@ for (let floor = 1; floor <= floors; floor++) {
     if (building) building.appendChild(floorDiv);
 }
 
-// ======================
-// AUTHENTICATION
-// ======================
 // ==========================================
 // AUTHENTICATION & LOCALSTORAGE SESSION
 // ==========================================
-
-// 1. دالة تسجيل الدخول
 function login() {
     const userInput = document.getElementById("loginUser").value.trim();
     const passInput = document.getElementById("loginPass").value.trim();
 
     if (userInput === "admin" && passInput === "1234") {
-        // حفظ الجلسة في LocalStorage
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", userInput);
-
         showMainApp();
     } else {
         document.getElementById("loginError").innerHTML = "❌ Wrong Username or Password";
     }
 }
 
-// 2. دالة إظهار الواجهة الرئيسية وتأكيد تفعيلها
 function showMainApp() {
     const loginPage = document.getElementById("loginPage");
     const appContent = document.getElementById("appContent");
@@ -166,11 +172,9 @@ function showMainApp() {
         appContent.style.display = "block";
     }
 
-    // فتح تبويب السكان افتراضياً عند الدخول
     openTab("residents");
 }
 
-// 3. دالة تسجيل الخروج (Logout)
 function logout() {
     showConfirm("Are you sure you want to log out?", function () {
         localStorage.removeItem("isLoggedIn");
@@ -188,7 +192,6 @@ function logout() {
     });
 }
 
-// 4. دالة التحقق من الجلسة
 function checkAuthOnLoad() {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
 
@@ -202,27 +205,6 @@ function checkAuthOnLoad() {
         if (appContent) appContent.style.display = "none";
     }
 }
-
-// ==========================================
-// CENTRAL INITIALIZATION (ON LOAD)
-// ==========================================
-// استخدام حدث واحد موحد لمنع أي تضارب
-window.addEventListener("DOMContentLoaded", function () {
-    // 1. التحقق الفوري من حالة تسجيل الدخول
-    checkAuthOnLoad();
-
-    // 2. تحميل استعراض البيانات
-    loadCustomers();
-    resetMonthlyPayments();
-    updateDashboard();
-
-    // 3. تحميل بيانات المالية والمصاريف
-    if (typeof renderExpenses === "function" && document.getElementById("expenseTableBody")) {
-        renderExpenses();
-    }
-    updateFinanceDashboard();
-});
-
 
 const loginPassInput = document.getElementById("loginPass");
 if (loginPassInput) {
@@ -246,9 +228,9 @@ function togglePassword() {
     }
 }
 
-// ======================
+// ==========================================
 // SAVE CUSTOMER
-// ======================
+// ==========================================
 if (saveBtn) {
     saveBtn.onclick = function () {
         const parentPhone = document.getElementById("customerParentPhone").value;
@@ -331,9 +313,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// ======================
+// ==========================================
 // CHECKOUT & UPDATE
-// ======================
+// ==========================================
 if (checkoutBtn) {
     checkoutBtn.onclick = function () {
         const i = selectedBed.dataset.index;
@@ -371,9 +353,9 @@ if (updateBtn) {
     };
 }
 
-// ======================
+// ==========================================
 // DASHBOARD & KPIS
-// ======================
+// ==========================================
 function updateDashboard() {
     let occupied = 0;
     let paid = 0;
@@ -564,9 +546,9 @@ function closeKpi() {
     kpiModal.style.display = "none";
 }
 
-// ======================
+// ==========================================
 // SEARCH FUNCTIONALITY
-// ======================
+// ==========================================
 const searchInput = document.getElementById("searchInput");
 
 if (searchInput) {
@@ -633,9 +615,9 @@ if (searchInput) {
     });
 }
 
-// ======================
+// ==========================================
 // LOCAL STORAGE & RESET
-// ======================
+// ==========================================
 function resetMonthlyPayments() {
     const now = new Date();
     const currentKey = `${now.getFullYear()}-${now.getMonth()}`;
@@ -669,6 +651,7 @@ function loadCustomers() {
     }
     updateDashboard();
 }
+
 function getStayDays(dateString) {
     if (!dateString) return "-";
 
@@ -679,9 +662,10 @@ function getStayDays(dateString) {
 
     return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
-// ======================
+
+// ==========================================
 // HISTORY & RECORDS
-// ======================
+// ==========================================
 function saveMonthlyPaidRecord() {
     const now = new Date();
     const key = `${now.getFullYear()}-${now.getMonth() + 1}`;
@@ -699,7 +683,7 @@ function saveMonthlyPaidRecord() {
         const room = Math.floor((i % bedsPerApartment) / beds) + 1;
         const bed = (i % beds) + 1;
 
-        paidCustomers.push({ ...c, floor, apartment, room, bed });
+        paidCustomers.push({ ...c, floor, apartment, room, bed, index: i });
     }
 
     paymentHistory[key] = paidCustomers;
@@ -723,9 +707,9 @@ function showHistory() {
         const monthTitle = document.createElement("div");
         monthTitle.className = "history-month-title";
         monthTitle.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f8fafc;border-radius:6px;margin-top:10px;">
                 <span>📅 ${month}</span>
-                <button class="delete-history-btn" onclick="deleteHistory('${month}')">
+                <button class="delete-history-btn" onclick="deleteHistory('${month}')" style="background:#ef4444;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;">
                     🗑 Delete
                 </button>
             </div>
@@ -736,12 +720,13 @@ function showHistory() {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Customer</th>
                     <th>Phone</th>
-                    <th>Floor</th>
-                    <th>Apartment</th>
-                    <th>Room</th>
+                    <th>Parent Phone</th>
+                    <th>Location</th>
                     <th>Bed</th>
+                    <th>Stay Days</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -753,99 +738,35 @@ function showHistory() {
             const tr = document.createElement("tr");
             const stayDays = getStayDays(c.date);
 
-let rowColor = "";
+            let rowColor = "#ffffff";
+            if (stayDays >= 90) rowColor = "#dcfce7";
+            else if (stayDays >= 30) rowColor = "#fef9c3";
 
-if (stayDays >= 90)
-    rowColor = "#dcfce7";
-else if (stayDays >= 30)
-    rowColor = "#fef9c3";
-else
-    rowColor = "#ffffff";
+            tr.style.background = rowColor;
 
-tr.style.background = rowColor;
-
-tr.innerHTML = `
-<td>
-
-<div style="display:flex;align-items:center;gap:12px">
-
-${c.idImage
-? `<img src="${c.idImage}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;">`
-: `<div style="width:42px;height:42px;border-radius:50%;background:#e2e8f0;
-display:flex;align-items:center;justify-content:center;">👤</div>`
-}
-
-<div>
-
-<div style="font-weight:700">
-${c.name}
-</div>
-
-<div style="font-size:11px;color:#94a3b8">
-Client #${1000+i}
-</div>
-
-</div>
-
-</div>
-
-</td>
-
-<td>
-
-${c.phone || "-"}
-
-<button onclick="navigator.clipboard.writeText('${c.phone || ""}')"
-style="
-margin-left:8px;
-padding:4px 8px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:#2563eb;
-color:white;
-">
-
-Copy
-
-</button>
-
-</td>
-
-<td>${c.parentPhone || "-"}</td>
-
-<td>
-
-Floor ${floor}<br>
-Apartment ${apartment}<br>
-Room ${room}
-
-</td>
-
-<td>Bed ${bed}</td>
-
-<td>
-
-${stayDays} Days
-
-</td>
-
-<td>
-
-${c.lastPayment || "-"}
-
-</td>
-
-<td>
-
-<span class="status-pill-paid">
-
-PAID
-
-</span>
-
-</td>
-`;
+            tr.innerHTML = `
+                <td>
+                    <div style="display:flex;align-items:center;gap:12px">
+                        ${c.idImage
+                            ? `<img src="${c.idImage}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">`
+                            : `<div style="width:38px;height:38px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;">👤</div>`
+                        }
+                        <div>
+                            <div style="font-weight:700">${c.name}</div>
+                            <div style="font-size:11px;color:#94a3b8">Client #${1000 + (c.index || 0)}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    ${c.phone || "-"}
+                    <button onclick="navigator.clipboard.writeText('${c.phone || ""}')" style="margin-left:6px;padding:2px 6px;border:none;border-radius:4px;cursor:pointer;background:#2563eb;color:white;font-size:11px;">Copy</button>
+                </td>
+                <td>${c.parentPhone || "-"}</td>
+                <td>Floor ${c.floor} • Apt ${c.apartment} • Rm ${c.room}</td>
+                <td>Bed ${c.bed}</td>
+                <td>${stayDays} Days</td>
+                <td><span class="status-pill-paid">PAID</span></td>
+            `;
             tbody.appendChild(tr);
         });
 
@@ -871,9 +792,9 @@ function deleteHistory(month) {
     );
 }
 
-// ======================
+// ==========================================
 // NAVIGATION TABS
-// ======================
+// ==========================================
 function openTab(tab) {
     document.getElementById("residentsPage").style.display = "none";
     document.getElementById("financePage").style.display = "none";
@@ -890,6 +811,7 @@ function openTab(tab) {
     if (tab === "finance") {
         document.getElementById("financePage").style.display = "block";
         if (buttons[1]) buttons[1].classList.add("active");
+        renderExpenses();
     }
 
     if (tab === "paidClients") {
@@ -899,86 +821,124 @@ function openTab(tab) {
     }
 }
 
-// ======================
-// EXPENSE MANAGEMENT
-// ======================
-if (addExpenseBtn) {
-    addExpenseBtn.onclick = function () {
+// ==========================================
+// ENTERPRISE EXPENSES MANAGEMENT & MODAL
+// ==========================================
+function openExpenseModal() {
+    if (expenseModal) {
         expenseModal.style.display = "flex";
-    };
-}
-
-if (cancelExpenseBtn) {
-    cancelExpenseBtn.onclick = function () {
-        expenseModal.style.display = "none";
-        document.getElementById("expenseCategory").value = "";
-        document.getElementById("expenseDescription").value = "";
-        document.getElementById("expenseAmount").value = "";
-    };
-}
-
-if (saveExpenseBtn) {
-    saveExpenseBtn.onclick = function () {
-        const category = document.getElementById("expenseCategory").value;
-        const description = document.getElementById("expenseDescription").value;
-        const amount = Number(document.getElementById("expenseAmount").value);
-
-        if (!category || !amount) {
-            alert("Please enter category and amount");
-            return;
+        const dateInput = document.getElementById("expenseDate");
+        if (dateInput) {
+            dateInput.value = new Date().toISOString().split('T')[0];
         }
+    }
+}
 
-        const expense = {
-            id: Date.now(),
-            date: new Date().toLocaleDateString(),
-            category,
-            description,
-            amount
-        };
-
-        expenses.push(expense);
-        saveExpenses();
-        renderExpenses();
-
+function closeExpenseModal() {
+    if (expenseModal) {
         expenseModal.style.display = "none";
-        document.getElementById("expenseCategory").value = "";
-        document.getElementById("expenseDescription").value = "";
-        document.getElementById("expenseAmount").value = "";
-    };
+        const form = document.getElementById("expenseForm");
+        if (form) form.reset();
+        else {
+            if (document.getElementById("expenseCategory")) document.getElementById("expenseCategory").value = "";
+            if (document.getElementById("expenseDescription")) document.getElementById("expenseDescription").value = "";
+            if (document.getElementById("expenseAmount")) document.getElementById("expenseAmount").value = "";
+        }
+    }
 }
 
-function saveExpenses() {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-}
-
-function renderExpenses() {
+function renderExpenses(dataToRender = expenses) {
     if (!expenseTableBody) return;
     expenseTableBody.innerHTML = "";
 
-    expenses.forEach(expense => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${expense.date}</td>
-            <td>${expense.category}</td>
-            <td>${expense.description || "-"}</td>
-            <td>$${expense.amount}</td>
-            <td>
-                <button onclick="deleteExpense(${expense.id})" style="background:#ef4444;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;">
-                    Delete
-                </button>
-            </td>
+    if (dataToRender.length === 0) {
+        expenseTableBody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 25px; color: #94a3b8;">
+                    <i class="fa-solid fa-folder-open" style="font-size: 2rem; margin-bottom: 8px; display: block;"></i>
+                    No expenses found.
+                </td>
+            </tr>
         `;
-        expenseTableBody.appendChild(row);
-    });
+    } else {
+        dataToRender.forEach(expense => {
+            const tr = document.createElement("tr");
+
+            let badgeClass = 'badge-other';
+            const catLower = (expense.category || "").toLowerCase();
+            if (catLower.includes('maintenance')) badgeClass = 'badge-maintenance';
+            else if (catLower.includes('utilities')) badgeClass = 'badge-utilities';
+            else if (catLower.includes('salaries')) badgeClass = 'badge-salaries';
+            else if (catLower.includes('cleaning')) badgeClass = 'badge-cleaning';
+
+            tr.innerHTML = `
+                <td><strong>${expense.date || 'N/A'}</strong></td>
+                <td><span class="badge-category ${badgeClass}">${expense.category}</span></td>
+                <td>${expense.description || "-"}</td>
+                <td style="font-weight: 700; color: #dc2626;">-${formatCurrency(expense.amount)}</td>
+                <td style="text-align: right;">
+                    <button class="btn-delete-expense" onclick="deleteExpense(${expense.id})" title="Delete Expense">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+            expenseTableBody.appendChild(tr);
+        });
+    }
 
     updateFinanceDashboard();
 }
 
+function filterExpenses() {
+    const searchVal = (document.getElementById('expenseSearchInput')?.value || '').toLowerCase().trim();
+    const categoryVal = document.getElementById('expenseCategoryFilter')?.value || 'all';
+
+    const filtered = expenses.filter(exp => {
+        const matchesSearch = (exp.description || "").toLowerCase().includes(searchVal) || 
+                              (exp.category || "").toLowerCase().includes(searchVal);
+        const matchesCategory = (categoryVal === 'all') || (exp.category === categoryVal);
+
+        return matchesSearch && matchesCategory;
+    });
+
+    renderExpenses(filtered);
+}
+
+function saveNewExpense() {
+    const categoryElem = document.getElementById("expenseCategory");
+    const descElem = document.getElementById("expenseDescription");
+    const amountElem = document.getElementById("expenseAmount");
+    const dateElem = document.getElementById("expenseDate");
+
+    const category = categoryElem ? categoryElem.value : "";
+    const description = descElem ? descElem.value.trim() : "";
+    const amount = amountElem ? Number(amountElem.value) : 0;
+    const date = dateElem && dateElem.value ? dateElem.value : new Date().toLocaleDateString();
+
+    if (!category || !amount || amount <= 0) {
+        alert("Please enter a valid category and amount.");
+        return;
+    }
+
+    const expense = {
+        id: Date.now(),
+        date: date,
+        category: category,
+        description: description,
+        amount: amount
+    };
+
+    expenses.unshift(expense);
+    saveExpensesToStorage();
+    renderExpenses();
+    closeExpenseModal();
+}
+
 function deleteExpense(id) {
-    showConfirm("Delete this expense?", function () {
+    showConfirm("Are you sure you want to delete this expense record?", function () {
         expenses = expenses.filter(e => e.id !== id);
-        saveExpenses();
-        renderExpenses();
+        saveExpensesToStorage();
+        filterExpenses();
     });
 }
 
@@ -992,7 +952,7 @@ function updateFinanceDashboard() {
 
     let expensesTotal = 0;
     expenses.forEach(e => {
-        expensesTotal += Number(e.amount);
+        expensesTotal += Number(e.amount || 0);
     });
 
     const profit = revenue - expensesTotal;
@@ -1001,26 +961,22 @@ function updateFinanceDashboard() {
     const financeExpenses = document.getElementById("financeExpenses");
     const profitBox = document.getElementById("financeProfit");
 
-    if (financeRevenue) financeRevenue.innerHTML = "$" + revenue;
-    if (financeExpenses) financeExpenses.innerHTML = "$" + expensesTotal;
+    if (financeRevenue) financeRevenue.innerHTML = formatCurrency(revenue);
+    if (financeExpenses) financeExpenses.innerHTML = formatCurrency(expensesTotal);
 
     if (profitBox) {
+        profitBox.innerHTML = formatCurrency(profit);
         if (profit >= 0) {
-            profitBox.innerHTML = "🟢 $" + profit;
-            profitBox.style.color = "#22c55e";
+            profitBox.className = "kpi-value text-emerald";
         } else {
-            profitBox.innerHTML = "🔴 -$" + Math.abs(profit);
-            profitBox.style.color = "#ef4444";
+            profitBox.className = "kpi-value text-danger";
         }
     }
 }
 
-// ======================
-// PAID CLIENTS TAB (PROFESSIONAL RENDER & FILTER)
 // ==========================================
-// ENTERPRISE PAID CLIENTS RENDER & EXPORT
+// PAID CLIENTS TAB RENDER & EXPORT
 // ==========================================
-
 function renderPaidClients() {
     const body = document.getElementById("paidClientsBody");
     const countElem = document.getElementById("paidClientsCount");
@@ -1051,7 +1007,7 @@ function renderPaidClients() {
         const bed = (i % beds) + 1;
 
         const tr = document.createElement("tr");
-        tr.dataset.floor = floor; // لتصفية الأدوار
+        tr.dataset.floor = floor;
 
         tr.innerHTML = `
             <td>
@@ -1076,18 +1032,15 @@ function renderPaidClients() {
         body.appendChild(tr);
     }
 
-    // Update KPI Cards
     if (countElem) countElem.innerText = paidCount;
-    if (totalRevElem) totalRevElem.innerText = `$${paidCount * MONTHLY_RENT}`;
+    if (totalRevElem) totalRevElem.innerText = formatCurrency(paidCount * MONTHLY_RENT);
     
-    // Settlement Rate Percentage
     const rate = totalOccupied > 0 ? Math.round((paidCount / totalOccupied) * 100) : 0;
     if (rateElem) rateElem.innerText = `${rate}%`;
 
     filterPaidClients();
 }
 
-// Live Filter (Search Text + Floor Filter)
 function filterPaidClients() {
     const input = document.getElementById("paidSearchInput");
     const floorSelect = document.getElementById("paidFloorFilter");
@@ -1105,7 +1058,6 @@ function filterPaidClients() {
     });
 }
 
-// Export Paid Clients Data to CSV
 function exportPaidToCSV() {
     let csvContent = "data:text/csv;charset=utf-8,Name,Phone,Parent Phone,Location,Bed,Status\n";
 
@@ -1134,9 +1086,31 @@ function exportPaidToCSV() {
     document.body.removeChild(link);
 }
 
-// ======================
-// GLOBAL EVENT LISTENERS & INITIALIZATION
-// ======================
+// ==========================================
+// CENTRAL INITIALIZATION (ON LOAD & EVENT BINDINGS)
+// ==========================================
+window.addEventListener("DOMContentLoaded", function () {
+    checkAuthOnLoad();
+    loadCustomers();
+    resetMonthlyPayments();
+    updateDashboard();
+
+    // Bind Expense Modal Buttons
+    if (addExpenseBtn) {
+        addExpenseBtn.onclick = openExpenseModal;
+    }
+    if (saveExpenseBtn) {
+        saveExpenseBtn.onclick = saveNewExpense;
+    }
+    if (cancelExpenseBtn) {
+        cancelExpenseBtn.onclick = closeExpenseModal;
+    }
+
+    renderExpenses();
+    updateFinanceDashboard();
+});
+
+// Global Close Modal Listener
 window.addEventListener("click", function (e) {
     if (e.target === modal) modal.style.display = "none";
     if (e.target === editModal) editModal.style.display = "none";
@@ -1148,5 +1122,5 @@ window.addEventListener("click", function (e) {
         historyModal.style.display = "none";
     }
 
-    if (e.target === expenseModal) expenseModal.style.display = "none";
+    if (e.target === expenseModal) closeExpenseModal();
 });
