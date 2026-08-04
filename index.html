@@ -14,48 +14,26 @@
          LOGIN PAGE
     ========================== -->
     <div id="loginPage" class="login-page">
-
         <div class="login-box">
-
-            <!-- Logo -->
-            <div class="login-logo">
-                🏢
-            </div>
-
-            <!-- Title -->
+            <div class="login-logo">🏢</div>
             <h1>Building Manager</h1>
+            <p>Resident & Finance Management System</p>
 
-            <p>
-                Resident & Finance Management System
-            </p>
-
-            <!-- Username -->
             <div class="input-group">
                 <label>Username</label>
-                <input
-                    id="loginUser"
-                    type="text"
-                    placeholder="Enter Username"
-                    autocomplete="username">
+                <input id="loginUser" type="text" placeholder="Enter Username" autocomplete="username">
             </div>
 
-            <!-- Password -->
             <div class="input-group">
                 <label>Password</label>
                 <div class="password-box">
-                    <input
-                        id="loginPass"
-                        type="password"
-                        placeholder="Enter Password"
-                        autocomplete="current-password">
-
+                    <input id="loginPass" type="password" placeholder="Enter Password" autocomplete="current-password">
                     <button type="button" class="toggle-password" onclick="togglePassword()">
                         <i id="eyeIcon" class="fa-regular fa-eye"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Remember -->
             <div class="login-options">
                 <label class="remember">
                     <input type="checkbox">
@@ -63,283 +41,278 @@
                 </label>
             </div>
 
-            <!-- Login Button -->
-            <button class="login-btn" onclick="login()">
-                🔐 Sign In
-            </button>
-
-            <!-- Error -->
+            <button class="login-btn" onclick="login()">🔐 Sign In</button>
             <div id="loginError"></div>
 
-            <!-- Footer -->
             <div class="login-footer">
-                Building Management System
-                <br>
-                Version 2026
+                Building Management System<br>Version 2026
             </div>
-
         </div>
-
     </div>
 
     <!-- ==========================
          MAIN APPLICATION CONTENT
-         (مخفي في البداية بكلاس hidden)
     ========================== -->
     <div id="appContent" class="hidden">
 
         <!-- Header -->
-<!-- Header with SVG Logout Button -->
-<header class="main-header">
-    <div class="brand-title">
-        <span class="brand-icon">🏢</span>
-        <h1>Building Management System</h1>
-    </div>
-    
-    <button onclick="logout()" class="logout-btn" title="Sign out of your account">
-        <!-- SVG Logout Icon -->
-        <svg class="logout-svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-        </svg>
-        <span>Logout</span>
-    </button>
-</header>
+        <header class="main-header">
+            <div class="brand-title">
+                <span class="brand-icon">🏢</span>
+                <h1>Building Management System</h1>
+            </div>
+            
+            <button onclick="logout()" class="logout-btn" title="Sign out of your account">
+                <svg class="logout-svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+            </button>
+        </header>
 
-
-
+        <!-- Navigation Tabs -->
         <div class="tabs">
-            <button
-                class="tab-btn active"
-                onclick="openTab('residents')">
+            <button class="tab-btn active" onclick="openTab('residents')">
                 🏠 Residents
             </button>
-
-            <button
-                class="tab-btn"
-                onclick="openTab('finance')">
-                💰 Finance
+            <button class="tab-btn" onclick="openTab('finance')">
+                💳 Expenses & Finance
             </button>
-
-            <button
-                class="tab-btn"
-                onclick="openTab('paidClients')">
+            <button class="tab-btn" onclick="openTab('paidClients')">
                 Paid Clients
             </button>
         </div>
 
         <!-- Dashboard / Residents Page -->
         <div id="residentsPage">
-
-            <!-- Dashboard -->
             <section class="dashboard">
-
                 <div class="card" onclick="showKpi('occupied')">
                     <h3>Occupied</h3>
                     <span id="occupiedBeds">0</span>
                 </div>
-
                 <div class="card" onclick="showKpi('available')">
                     <h3>Available</h3>
                     <span id="availableBeds">0</span>
                 </div>
-
                 <div class="card" onclick="showKpi('paid')">
                     <h3>Paid</h3>
                     <span id="paidCustomers">0</span>
                 </div>
-
                 <div class="card" onclick="showKpi('unpaid')">
                     <h3>Unpaid</h3>
                     <span id="unpaidCustomers">0</span>
                 </div>
-
                 <div class="card">
                     <h3>Revenue</h3>
                     <h2 id="revenue">$0</h2>
                 </div>
-
             </section>
 
-            <!-- Search + Actions -->
             <section class="top-bar">
-
                 <div class="search-box">
-                    <input
-                        id="searchInput"
-                        type="text"
-                        placeholder="Search by customer, floor, apartment, room or bed...">
+                    <input id="searchInput" type="text" placeholder="Search by customer, floor, apartment, room or bed...">
                 </div>
-
-                <button class="history-btn" onclick="showHistory()">
-                    📄 Payment History
-                </button>
-
+                <button class="history-btn" onclick="showHistory()">📄 Payment History</button>
             </section>
 
             <main id="building"></main>
-
         </div>
 
-        <!-- Finance Page -->
+        <!-- ==========================================
+             ENTERPRISE EXPENSES & FINANCE PAGE
+        ========================================== -->
         <div id="financePage" style="display:none;">
+            <div class="finance-container paid-enterprise-container">
 
-            <div class="finance-container">
-
-                <h2>💰 Finance Dashboard</h2>
-
-                <div class="finance-summary">
-
-                    <div class="finance-card">
-                        <h3>Revenue</h3>
-                        <h1 id="financeRevenue">$0</h1>
+                <!-- Header Section -->
+                <div class="paid-header">
+                    <div class="paid-title-group">
+                        <div class="status-indicator-dot"></div>
+                        <div>
+                            <h2>Financial Management & Expenses</h2>
+                            <p class="paid-subtitle">Track building operational expenditures, cash flow, and net balance</p>
+                        </div>
                     </div>
 
-                    <div class="finance-card">
-                        <h3>Expenses</h3>
-                        <h1 id="financeExpenses">$0</h1>
+                    <div class="export-actions-group">
+                        <button class="btn-primary-print" id="addExpenseBtn">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add New Expense</span>
+                        </button>
                     </div>
-
-                    <div class="finance-card">
-                        <h3>Profit</h3>
-                        <h1 id="financeProfit">$0</h1>
-                    </div>
-
                 </div>
 
-                <hr>
+                <!-- KPI Summary Cards -->
+                <div class="paid-kpi-grid">
+                    <div class="paid-kpi-card">
+                        <div class="kpi-icon-wrapper emerald-bg">
+                            <i class="fa-solid fa-arrow-trend-up text-emerald"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <span class="kpi-label">Total Revenue</span>
+                            <h1 id="financeRevenue" class="kpi-value text-emerald">$0</h1>
+                        </div>
+                    </div>
 
-                <h3>Expenses</h3>
+                    <div class="paid-kpi-card">
+                        <div class="kpi-icon-wrapper red-bg">
+                            <i class="fa-solid fa-receipt text-danger"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <span class="kpi-label">Total Expenses</span>
+                            <h1 id="financeExpenses" class="kpi-value text-danger">$0</h1>
+                        </div>
+                    </div>
 
-                <button id="addExpenseBtn">
-                    ➕ Add Expense
-                </button>
+                    <div class="paid-kpi-card">
+                        <div class="kpi-icon-wrapper blue-bg">
+                            <i class="fa-solid fa-wallet text-blue"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <span class="kpi-label">Net Profit / Balance</span>
+                            <h1 id="financeProfit" class="kpi-value">$0</h1>
+                        </div>
+                    </div>
+                </div>
 
-                <table class="expense-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="expenseTableBody"></tbody>
-                </table>
+                <!-- Filters & Search Toolbar -->
+                <div class="paid-filter-toolbar">
+                    <div class="paid-search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input
+                            id="expenseSearchInput"
+                            type="text"
+                            placeholder="Search expenses by description or category..."
+                            oninput="filterExpenses()">
+                    </div>
+
+                    <div class="floor-filter-select-wrapper">
+                        <select id="expenseCategoryFilter" onchange="filterExpenses()">
+                            <option value="all">All Categories</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Utilities">Utilities (Electricity/Water)</option>
+                            <option value="Salaries">Staff Salaries</option>
+                            <option value="Cleaning">Cleaning & Supplies</option>
+                            <option value="Other">Other Expenses</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Expenses Data Table -->
+                <div class="paid-table-card">
+                    <table class="paid-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseTableBody">
+                            <!-- Expense items loaded dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
-
         </div>
 
         <!-- Paid Clients Page -->
-        <!-- Paid Clients Page -->
-<!-- Paid Clients Page (Enterprise Edition) -->
-<div id="paidClientsPage" style="display:none;">
+        <div id="paidClientsPage" style="display:none;">
+            <div class="finance-container paid-enterprise-container">
+                <div class="paid-header">
+                    <div class="paid-title-group">
+                        <div class="status-indicator-dot"></div>
+                        <div>
+                            <h2>Paid Clients Directory</h2>
+                            <p class="paid-subtitle">Real-time overview of active tenants with verified monthly settlements</p>
+                        </div>
+                    </div>
 
-    <div class="finance-container paid-enterprise-container">
-
-        <!-- Top Header & Export Toolbar -->
-        <div class="paid-header">
-            <div class="paid-title-group">
-                <div class="status-indicator-dot"></div>
-                <div>
-                    <h2>Paid Clients Directory</h2>
-                    <p class="paid-subtitle">Real-time overview of active tenants with verified monthly settlements</p>
+                    <div class="export-actions-group">
+                        <button class="btn-secondary-export" onclick="exportPaidToCSV()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span>Export CSV</span>
+                        </button>
+                        <button class="btn-primary-print" onclick="window.print()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                            <span>Print Report</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="export-actions-group">
-                <button class="btn-secondary-export" onclick="exportPaidToCSV()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span>Export CSV</span>
-                </button>
-                <button class="btn-primary-print" onclick="window.print()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                    <span>Print Report</span>
-                </button>
+                <div class="paid-kpi-grid">
+                    <div class="paid-kpi-card">
+                        <div class="kpi-icon-wrapper green-bg">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="kpi-details">
+                            <span class="kpi-label">Paid Tenants</span>
+                            <h1 id="paidClientsCount" class="kpi-value">0</h1>
+                        </div>
+                    </div>
+
+                    <div class="paid-kpi-card">
+                        <div class="kpi-icon-wrapper emerald-bg">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <div class="kpi-details">
+                            <span class="kpi-label">Collected Revenue</span>
+                            <h1 id="paidClientsTotalRev" class="kpi-value text-emerald">$0</h1>
+                        </div>
+                    </div>
+
+                    <div class="paid-kpi-card">
+                        <div class="kpi-icon-wrapper blue-bg">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="kpi-details">
+                            <span class="kpi-label">Settlement Rate</span>
+                            <h1 id="paidRatePercentage" class="kpi-value">0%</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paid-filter-toolbar">
+                    <div class="paid-search-input-wrapper">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input id="paidSearchInput" type="text" placeholder="Search by tenant name, phone, floor, or room..." oninput="filterPaidClients()">
+                    </div>
+
+                    <div class="floor-filter-select-wrapper">
+                        <select id="paidFloorFilter" onchange="filterPaidClients()">
+                            <option value="all">All Floors</option>
+                            <option value="1">Floor 1</option>
+                            <option value="2">Floor 2</option>
+                            <option value="3">Floor 3</option>
+                            <option value="4">Floor 4</option>
+                            <option value="5">Floor 5</option>
+                            <option value="6">Floor 6</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paid-table-card">
+                    <table class="paid-table">
+                        <thead>
+                            <tr>
+                                <th>Client Details</th>
+                                <th>Contact Phone</th>
+                                <th>Parent Contact</th>
+                                <th>Location</th>
+                                <th>Bed No.</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paidClientsBody"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
-        <!-- KPI Metrics Grid -->
-        <div class="paid-kpi-grid">
-            <div class="paid-kpi-card">
-                <div class="kpi-icon-wrapper green-bg">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
-                <div class="kpi-details">
-                    <span class="kpi-label">Paid Tenants</span>
-                    <h1 id="paidClientsCount" class="kpi-value">0</h1>
-                </div>
-            </div>
-
-            <div class="paid-kpi-card">
-                <div class="kpi-icon-wrapper emerald-bg">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                </div>
-                <div class="kpi-details">
-                    <span class="kpi-label">Collected Revenue</span>
-                    <h1 id="paidClientsTotalRev" class="kpi-value text-emerald">$0</h1>
-                </div>
-            </div>
-
-            <div class="paid-kpi-card">
-                <div class="kpi-icon-wrapper blue-bg">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-                <div class="kpi-details">
-                    <span class="kpi-label">Settlement Rate</span>
-                    <h1 id="paidRatePercentage" class="kpi-value">0%</h1>
-                </div>
-            </div>
-        </div>
-
-        <!-- Search & Advanced Filter Toolbar -->
-        <div class="paid-filter-toolbar">
-            <div class="paid-search-input-wrapper">
-                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input
-                    id="paidSearchInput"
-                    type="text"
-                    placeholder="Search by tenant name, phone, floor, or room..."
-                    oninput="filterPaidClients()">
-            </div>
-
-            <div class="floor-filter-select-wrapper">
-                <select id="paidFloorFilter" onchange="filterPaidClients()">
-                    <option value="all">All Floors</option>
-                    <option value="1">Floor 1</option>
-                    <option value="2">Floor 2</option>
-                    <option value="3">Floor 3</option>
-                    <option value="4">Floor 4</option>
-                    <option value="5">Floor 5</option>
-                    <option value="6">Floor 6</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Modern Table Wrapper -->
-        <div class="paid-table-card">
-            <table class="paid-table">
-                <thead>
-                    <tr>
-                        <th>Client Details</th>
-                        <th>Contact Phone</th>
-                        <th>Parent Contact</th>
-                        <th>Location</th>
-                        <th>Bed No.</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="paidClientsBody"></tbody>
-            </table>
-        </div>
-
-    </div>
-
-</div>
-
 
         <!-- ========================= -->
         <!-- MODALS                    -->
@@ -409,9 +382,7 @@
         <div id="confirmModal" class="modal">
             <div class="modal-content confirm-box">
                 <h2>⚠️ Confirmation</h2>
-                <p id="confirmText">
-                    Are you sure you want to change this customer to Unpaid?
-                </p>
+                <p id="confirmText">Are you sure you want to change this customer to Unpaid?</p>
                 <div class="confirm-buttons">
                     <button id="confirmCancel" class="cancel-btn">Cancel</button>
                     <button id="confirmOk" class="danger-btn">Yes, Change</button>
@@ -419,15 +390,44 @@
             </div>
         </div>
 
-        <!-- Expense Modal -->
+        <!-- Professional Add Expense Modal -->
         <div id="expenseModal" class="modal">
-            <div class="modal-content">
-                <h2>Add Expense</h2>
-                <input id="expenseCategory" placeholder="Category">
-                <input id="expenseDescription" placeholder="Description">
-                <input id="expenseAmount" type="number" placeholder="Amount">
-                <button id="saveExpense">Save</button>
-                <button id="cancelExpense">Cancel</button>
+            <div class="modal-content professional-modal">
+                <div class="modal-header-custom">
+                    <h3><i class="fa-solid fa-file-invoice-dollar"></i> Add New Expense Entry</h3>
+                    <span class="close-modal-x" onclick="closeExpenseModal()">&times;</span>
+                </div>
+                <form id="expenseForm" onsubmit="event.preventDefault();">
+                    <div class="form-group-custom">
+                        <label for="expenseCategory">Expense Category</label>
+                        <select id="expenseCategory" required>
+                            <option value="" disabled selected>Select category...</option>
+                            <option value="Maintenance">Maintenance & Repairs</option>
+                            <option value="Utilities">Utilities (Electricity, Water, Internet)</option>
+                            <option value="Salaries">Staff Salaries & Wages</option>
+                            <option value="Cleaning">Cleaning Services & Supplies</option>
+                            <option value="Other">Other Expenses</option>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label for="expenseDescription">Description / Vendor Name</label>
+                        <input id="expenseDescription" type="text" placeholder="e.g. Generator repair service" required>
+                    </div>
+                    <div class="form-row-custom">
+                        <div class="form-group-custom">
+                            <label for="expenseAmount">Amount ($)</label>
+                            <input id="expenseAmount" type="number" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label for="expenseDate">Expense Date</label>
+                            <input id="expenseDate" type="date" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer-custom">
+                        <button type="button" class="btn-cancel" id="cancelExpense">Cancel</button>
+                        <button type="button" class="btn-save" id="saveExpense">Save Expense Record</button>
+                    </div>
+                </form>
             </div>
         </div>
 
