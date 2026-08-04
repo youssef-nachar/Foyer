@@ -1953,3 +1953,138 @@ header h1 {
     background-color: #16a34a;
     border-radius: 50%;
 }
+/* Expense Dynamic Colors & Custom Classes */
+.text-emerald { color: #059669 !important; }
+.text-danger { color: #dc2626 !important; }
+.text-blue { color: #2563eb !important; }
+
+.red-bg { background-color: #fef2f2 !important; }
+
+/* Expense Category Badges */
+.badge-category {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    display: inline-block;
+}
+.badge-maintenance { background-color: #ffe4e6; color: #e11d48; }
+.badge-utilities { background-color: #e0f2fe; color: #0369a1; }
+.badge-salaries { background-color: #fef3c7; color: #d97706; }
+.badge-cleaning { background-color: #f3e8ff; color: #7e22ce; }
+.badge-other { background-color: #f1f5f9; color: #475569; }
+
+/* Table Action Buttons */
+.btn-delete-expense {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+.btn-delete-expense:hover {
+    background-color: #fee2e2;
+}
+
+/* Professional Expense Modal */
+.professional-modal {
+    max-width: 480px;
+    border-radius: 12px;
+    padding: 24px;
+    background: #ffffff;
+}
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+.modal-header-custom h3 {
+    font-size: 1.15rem;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.close-modal-x {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+}
+.form-group-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+.form-group-custom label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+}
+.form-group-custom input,
+.form-group-custom select {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.form-group-custom input:focus,
+.form-group-custom select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+.form-row-custom {
+    display: flex;
+    gap: 12px;
+}
+.form-row-custom .form-group-custom {
+    flex: 1;
+}
+.modal-footer-custom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+.btn-save {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-cancel {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+/* Fix Font Awesome Icons */
+.fa,
+.fas,
+.far,
+.fal,
+.fad,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+}
+
+.fa-solid,
+.fa-regular {
+    font-weight: 900;
+}
