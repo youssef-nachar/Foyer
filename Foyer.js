@@ -615,29 +615,119 @@ if (searchInput) {
     });
 }
 
-// ==========================================
-// LOCAL STORAGE & RESET
-// ==========================================
-function resetMonthlyPayments() {
-    const now = new Date();
-    const currentKey = `${now.getFullYear()}-${now.getMonth()}`;
-    const lastReset = localStorage.getItem("lastPaymentReset");
 
-    if (lastReset !== currentKey) {
-        saveMonthlyPaidRecord();
-
-        for (let i = 0; i < customers.length; i++) {
-            if (customers[i]) {
-                customers[i].paid = "Unpaid";
-                updateBedUI(i);
-            }
-        }
-
-        localStorage.setItem("lastPaymentReset", currentKey);
-        saveCustomers();
-        updateDashboard();
-    }
+function getMonthKey(date = new Date()) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 }
+
+
+function resetMonthlyPayments() {
+
+    const currentMonthKey = getMonthKey();
+
+    // Month previously processed by this browser
+    const lastProcessedMonth =
+        localStorage.getItem("lastPaymentReset");
+
+    // ==========================================
+    // FIRST INSTALLATION / FIRST TIME
+    // ==========================================
+    //
+    // We DO NOT reset customers here.
+    // Existing customer payment status should remain unchanged.
+    //
+    if (!lastProcessedMonth) {
+
+        localStorage.setItem(
+            "lastPaymentReset",
+            currentMonthKey
+        );
+
+        console.log(
+            `📅 Monthly payment system initialized for ${currentMonthKey}`
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // SAME MONTH
+    // ==========================================
+    //
+    // Already processed this month.
+    //
+    if (lastProcessedMonth === currentMonthKey) {
+
+        console.log(
+            `✅ Monthly reset already completed for ${currentMonthKey}`
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // NEW MONTH DETECTED
+    // ==========================================
+
+    console.log("==========================================");
+    console.log("🔄 NEW MONTH DETECTED");
+    console.log("Previous:", lastProcessedMonth);
+    console.log("Current :", currentMonthKey);
+    console.log("==========================================");
+
+
+    // ==========================================
+    // RESET ALL ACTIVE CUSTOMERS
+    // ==========================================
+
+    let resetCount = 0;
+
+    customers.forEach((customer, index) => {
+
+        // Empty bed → nothing to reset
+        if (!customer) return;
+
+        // Reset payment status
+        customer.paid = "Unpaid";
+
+        resetCount++;
+
+        // Update visual bed
+        updateBedUI(index);
+    });
+
+
+    // ==========================================
+    // SAVE CUSTOMERS
+    // ==========================================
+
+    saveCustomers();
+
+
+    // ==========================================
+    // MARK CURRENT MONTH AS PROCESSED
+    // ==========================================
+
+    localStorage.setItem(
+        "lastPaymentReset",
+        currentMonthKey
+    );
+
+
+    // ==========================================
+    // REFRESH DASHBOARD
+    // ==========================================
+
+    updateDashboard();
+
+
+    console.log(
+        `✅ ${resetCount} customers reset to Unpaid for ${currentMonthKey}`
+    );
+}
+
 
 function saveCustomers() {
     localStorage.setItem("customers", JSON.stringify(customers));
@@ -666,29 +756,68 @@ function getStayDays(dateString) {
 // ==========================================
 // HISTORY & RECORDS
 // ==========================================
-function saveMonthlyPaidRecord() {
-    const now = new Date();
-    const key = `${now.getFullYear()}-${now.getMonth() + 1}`;
+
+// ==========================================
+// SAVE MONTHLY PAID RECORD
+// ==========================================
+
+function saveMonthlyPaidRecord(monthKey = getMonthKey()) {
+
     const paidCustomers = [];
 
     for (let i = 0; i < customers.length; i++) {
+
         const c = customers[i];
+
         if (!c || c.paid !== "Paid") continue;
 
         const bedsPerApartment = rooms * beds;
         const bedsPerFloor = apartments * rooms * beds;
 
-        const floor = Math.floor(i / bedsPerFloor) + 1;
-        const apartment = Math.floor((i % bedsPerFloor) / bedsPerApartment) + 1;
-        const room = Math.floor((i % bedsPerApartment) / beds) + 1;
-        const bed = (i % beds) + 1;
+        const floor =
+            Math.floor(i / bedsPerFloor) + 1;
 
-        paidCustomers.push({ ...c, floor, apartment, room, bed, index: i });
+        const apartment =
+            Math.floor(
+                (i % bedsPerFloor) / bedsPerApartment
+            ) + 1;
+
+        const room =
+            Math.floor(
+                (i % bedsPerApartment) / beds
+            ) + 1;
+
+        const bed =
+            (i % beds) + 1;
+
+        paidCustomers.push({
+            ...c,
+            floor,
+            apartment,
+            room,
+            bed,
+            index: i
+        });
     }
 
-    paymentHistory[key] = paidCustomers;
-    localStorage.setItem("paymentHistory", JSON.stringify(paymentHistory));
+    // ------------------------------------------
+    // SAVE ONLY IF THERE ARE PAID CUSTOMERS
+    // ------------------------------------------
+
+    paymentHistory[monthKey] = paidCustomers;
+
+    localStorage.setItem(
+        "paymentHistory",
+        JSON.stringify(paymentHistory)
+    );
+
+    console.log(
+        `💰 Payment history saved for ${monthKey}:`,
+        paidCustomers.length,
+        "paid customers"
+    );
 }
+
 
 function showHistory() {
     const modalHistory = document.getElementById("historyModal");
@@ -1101,19 +1230,36 @@ function exportPaidToCSV() {
 // ==========================================
 // CENTRAL INITIALIZATION (ON LOAD & EVENT BINDINGS)
 // ==========================================
+
 window.addEventListener("DOMContentLoaded", function () {
+
+    // 1. Check authentication
     checkAuthOnLoad();
+
+    // 2. Load customers from LocalStorage
     loadCustomers();
+
+    // 3. Check if a new month has started
+    //    If yes:
+    //    - Save previous month's paid customers
+    //    - Reset everyone to Unpaid
     resetMonthlyPayments();
+
+    // 4. Refresh dashboard
     updateDashboard();
 
-    // Bind Expense Modal Buttons
+    // ------------------------------------------
+    // EXPENSE BUTTONS
+    // ------------------------------------------
+
     if (addExpenseBtn) {
         addExpenseBtn.onclick = openExpenseModal;
     }
+
     if (saveExpenseBtn) {
         saveExpenseBtn.onclick = saveNewExpense;
     }
+
     if (cancelExpenseBtn) {
         cancelExpenseBtn.onclick = closeExpenseModal;
     }
@@ -1121,6 +1267,8 @@ window.addEventListener("DOMContentLoaded", function () {
     renderExpenses();
     updateFinanceDashboard();
 });
+
+
 
 // Global Close Modal Listener
 window.addEventListener("click", function (e) {
