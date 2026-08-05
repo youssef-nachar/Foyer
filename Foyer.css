@@ -513,7 +513,7 @@ header h1 {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     padding: 24px 30px;
-    max-width: 1500px;
+    /* max-width: 1500px; */
     margin: 0 auto;
 }
 
@@ -648,8 +648,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    max-width: 1500px;
-    margin: 0 auto;
+max-width: 100%;    margin: 0 auto;
 }
 
 .floor {
@@ -901,7 +900,7 @@ header h1 {
 ===================================================== */
 #financePage {
     padding: 30px;
-    max-width: 1500px;
+    /* max-width: 1500px; */
     margin: 0 auto;
 }
 
@@ -1553,29 +1552,13 @@ header h1 {
         gap: 4px;
     }
 }
-/* Paid Clients Custom Styling */
-.paid-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-@media print {
-    /* إخفاء القائمة والأزرار أثناء الطباعة لاستخراج تقرير نظيف */
-    .tabs, .top-bar, .history-btn, #loginPage {
-        display: none !important;
-    }
-    #paidClientsPage {
-        display: block !important;
-    }
-}
 /* ==========================================
    تنسيق جداول احترافي وواضح للقراءة
    ========================================== */
 
 /* الخلفية العامة لجدول الدافعين والمالية */
+
+
 .history-table-container, 
 .expense-table {
     background-color: #ffffff !important;
@@ -2087,4 +2070,2560 @@ header h1 {
 .fa-solid,
 .fa-regular {
     font-weight: 900;
+}
+#paidClientsPage {
+    --paid-bg: #07111f;
+    --paid-bg-2: #0b1728;
+    --paid-card: rgba(15, 27, 45, 0.92);
+    --paid-card-2: #111f33;
+    --paid-border: rgba(148, 163, 184, 0.14);
+
+    --paid-text: #f8fafc;
+    --paid-muted: #94a3b8;
+    --paid-muted-2: #64748b;
+
+    --paid-green: #22c55e;
+    --paid-emerald: #10b981;
+    --paid-blue: #3b82f6;
+    --paid-cyan: #06b6d4;
+
+    color: var(--paid-text);
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+#paidClientsPage .paid-enterprise-container {
+    width: 100%;
+    padding: 26px;
+    background:
+        radial-gradient(
+            circle at 85% 0%,
+            rgba(59, 130, 246, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(16, 185, 129, 0.07),
+            transparent 28%
+        ),
+        linear-gradient(
+            145deg,
+            var(--paid-bg),
+            var(--paid-bg-2)
+        );
+
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 22px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.30),
+        inset 0 1px 0 rgba(255,255,255,0.025);
+
+    min-height: calc(100vh - 70px);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+#paidClientsPage .paid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 4px 2px 24px;
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid var(--paid-border);
+}
+
+
+#paidClientsPage .paid-title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+#paidClientsPage .status-indicator-dot {
+    width: 12px;
+    height: 12px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--paid-green);
+
+    box-shadow:
+        0 0 0 5px rgba(34, 197, 94, 0.10),
+        0 0 18px rgba(34, 197, 94, 0.65);
+
+    animation: paidPulse 2.2s infinite;
+}
+
+
+@keyframes paidPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 0 5px rgba(34,197,94,.08),
+            0 0 14px rgba(34,197,94,.45);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 8px rgba(34,197,94,.03),
+            0 0 25px rgba(34,197,94,.75);
+    }
+}
+
+
+#paidClientsPage .paid-title-group h2 {
+    margin: 0;
+
+    color: #f8fafc;
+
+    font-size: 25px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+
+    line-height: 1.2;
+}
+
+
+#paidClientsPage .paid-subtitle {
+    margin: 7px 0 0;
+
+    color: var(--paid-muted);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+#paidClientsPage .export-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+#paidClientsPage .btn-secondary-export,
+#paidClientsPage .btn-primary-print {
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    height: 40px;
+    padding: 0 15px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+
+#paidClientsPage .btn-secondary-export {
+
+    color: #cbd5e1;
+
+    background: rgba(15, 27, 45, .85);
+
+    border: 1px solid rgba(148, 163, 184, .18);
+}
+
+
+#paidClientsPage .btn-secondary-export:hover {
+
+    color: #fff;
+
+    background: #16253b;
+
+    border-color: rgba(148, 163, 184, .30);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.20);
+}
+
+
+#paidClientsPage .btn-primary-print {
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    border: 1px solid rgba(96,165,250,.35);
+
+    box-shadow:
+        0 8px 22px rgba(37,99,235,.20);
+}
+
+
+#paidClientsPage .btn-primary-print:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(37,99,235,.32);
+}
+
+
+/* =========================================================
+   KPI GRID
+   ========================================================= */
+
+#paidClientsPage .paid-kpi-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+#paidClientsPage .paid-kpi-card {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 112px;
+
+    padding: 19px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 32, 52, .98),
+            rgba(12, 24, 40, .98)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,.13);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.16),
+        inset 0 1px 0 rgba(255,255,255,.025);
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+
+#paidClientsPage .paid-kpi-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -35px;
+    bottom: -45px;
+
+    border-radius: 50%;
+
+    background: rgba(59,130,246,.08);
+
+    filter: blur(3px);
+
+    pointer-events: none;
+}
+
+
+#paidClientsPage .paid-kpi-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(96,165,250,.24);
+
+    box-shadow:
+        0 18px 42px rgba(0,0,0,.24);
+}
+
+
+/* =========================================================
+   KPI ICON
+   ========================================================= */
+
+#paidClientsPage .kpi-icon-wrapper {
+
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+
+#paidClientsPage .green-bg {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(34,197,94,.16),
+            rgba(34,197,94,.06)
+        );
+
+    box-shadow:
+        inset 0 0 18px rgba(34,197,94,.04);
+}
+
+
+#paidClientsPage .emerald-bg {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,185,129,.16),
+            rgba(16,185,129,.05)
+        );
+}
+
+
+#paidClientsPage .blue-bg {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(59,130,246,.17),
+            rgba(59,130,246,.05)
+        );
+}
+
+
+#paidClientsPage .kpi-details {
+
+    min-width: 0;
+}
+
+
+#paidClientsPage .kpi-label {
+
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 650;
+
+    text-transform: uppercase;
+    letter-spacing: .75px;
+
+    margin-bottom: 5px;
+}
+
+
+#paidClientsPage .kpi-value {
+
+    margin: 0;
+
+    color: #f8fafc;
+
+    font-size: 27px;
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+}
+
+
+#paidClientsPage .text-emerald {
+
+    color: #34d399 !important;
+
+    text-shadow:
+        0 0 18px rgba(52,211,153,.12);
+}
+
+
+/* =========================================================
+   FILTER TOOLBAR
+   ========================================================= */
+
+#paidClientsPage .paid-filter-toolbar {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 13px;
+
+    margin-bottom: 15px;
+
+    background:
+        rgba(12, 24, 40, .72);
+
+    border:
+        1px solid
+        rgba(148,163,184,.11);
+
+    border-radius: 14px;
+
+    backdrop-filter: blur(12px);
+}
+
+
+#paidClientsPage .paid-search-input-wrapper {
+
+    position: relative;
+
+    flex: 1;
+
+    min-width: 220px;
+}
+
+
+#paidClientsPage .paid-search-input-wrapper .search-icon {
+
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+
+    opacity: .7;
+}
+
+
+#paidClientsPage #paidSearchInput {
+
+    width: 100%;
+    height: 43px;
+
+    padding:
+        0 14px 0 42px;
+
+    color: #e2e8f0;
+
+    background:
+        #0a1626;
+
+    border:
+        1px solid
+        rgba(148,163,184,.14);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 12px;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+
+#paidClientsPage #paidSearchInput::placeholder {
+
+    color: #64748b;
+}
+
+
+#paidClientsPage #paidSearchInput:focus {
+
+    background: #0c1a2d;
+
+    border-color:
+        rgba(59,130,246,.55);
+
+    box-shadow:
+        0 0 0 3px rgba(59,130,246,.10);
+}
+
+
+/* =========================================================
+   FLOOR SELECT
+   ========================================================= */
+
+#paidClientsPage .floor-filter-select-wrapper {
+
+    width: 175px;
+    flex-shrink: 0;
+}
+
+
+#paidClientsPage #paidFloorFilter {
+
+    width: 100%;
+    height: 43px;
+
+    padding:
+        0 35px 0 13px;
+
+    color: #cbd5e1;
+
+    background-color: #0a1626;
+
+    border:
+        1px solid
+        rgba(148,163,184,.14);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+#paidClientsPage #paidFloorFilter:hover {
+
+    border-color:
+        rgba(148,163,184,.28);
+}
+
+
+#paidClientsPage #paidFloorFilter:focus {
+
+    border-color:
+        rgba(59,130,246,.55);
+
+    box-shadow:
+        0 0 0 3px rgba(59,130,246,.10);
+}
+
+
+#paidClientsPage #paidFloorFilter option {
+
+    color: #e2e8f0;
+
+    background: #0b1728;
+}
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+#paidClientsPage .paid-table-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,27,45,.97),
+            rgba(9,20,34,.97)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,.13);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,.20);
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+#paidClientsPage .paid-table {
+
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    color: #e2e8f0;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+#paidClientsPage .paid-table thead {
+
+    background:
+        linear-gradient(
+            180deg,
+            #14243a,
+            #101e31
+        );
+}
+
+
+#paidClientsPage .paid-table th {
+
+    height: 48px;
+
+    padding:
+        0 18px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+    letter-spacing: .75px;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+    border-bottom:
+        1px solid
+        rgba(148,163,184,.13);
+}
+
+
+#paidClientsPage .paid-table th:first-child {
+
+    border-top-left-radius: 16px;
+}
+
+
+#paidClientsPage .paid-table th:last-child {
+
+    border-top-right-radius: 16px;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
+#paidClientsPage .paid-table td {
+
+    height: 64px;
+
+    padding:
+        10px 18px;
+
+    color: #cbd5e1;
+
+    border-bottom:
+        1px solid
+        rgba(148,163,184,.075);
+
+    vertical-align: middle;
+}
+
+
+#paidClientsPage .paid-table tbody tr {
+
+    background:
+        rgba(10, 22, 38, .55);
+
+    transition:
+        background .18s ease,
+        transform .18s ease;
+}
+
+
+#paidClientsPage .paid-table tbody tr:hover {
+
+    background:
+        rgba(30, 52, 78, .60);
+}
+
+
+#paidClientsPage .paid-table tbody tr:last-child td {
+
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   CLIENT INFORMATION
+   Works nicely with dynamically generated content
+   ========================================================= */
+
+#paidClientsPage .paid-table td:first-child {
+
+    color: #f1f5f9;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   Compatible with common status class names
+   ========================================================= */
+
+#paidClientsPage .status-badge,
+#paidClientsPage .paid-status,
+#paidClientsPage .status-paid {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-width: 74px;
+
+    padding:
+        6px 10px;
+
+    color: #4ade80;
+
+    background:
+        rgba(34,197,94,.09);
+
+    border:
+        1px solid
+        rgba(34,197,94,.18);
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+    letter-spacing: .45px;
+}
+
+
+#paidClientsPage .status-badge::before,
+#paidClientsPage .paid-status::before,
+#paidClientsPage .status-paid::before {
+
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 8px rgba(34,197,94,.7);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+#paidClientsPage .paid-table-card {
+
+    scrollbar-width: thin;
+    scrollbar-color:
+        #334155
+        transparent;
+}
+
+
+#paidClientsPage ::-webkit-scrollbar {
+
+    width: 7px;
+    height: 7px;
+}
+
+
+#paidClientsPage ::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+#paidClientsPage ::-webkit-scrollbar-thumb {
+
+    background: #334155;
+
+    border-radius: 20px;
+}
+
+
+#paidClientsPage ::-webkit-scrollbar-thumb:hover {
+
+    background: #475569;
+}
+
+
+/* =========================================================
+   EMPTY TABLE STATE
+   ========================================================= */
+
+#paidClientsPage .paid-table tbody:empty::after {
+
+    content: "No paid clients found";
+
+    display: block;
+
+    padding: 55px 20px;
+
+    color: #64748b;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    #paidClientsPage .paid-kpi-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    #paidClientsPage .paid-table-card {
+
+        overflow-x: auto;
+    }
+
+    #paidClientsPage .paid-table {
+
+        min-width: 900px;
+    }
+}
+
+
+@media (max-width: 850px) {
+
+    #paidClientsPage .paid-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    #paidClientsPage .export-actions-group {
+
+        width: 100%;
+    }
+
+    #paidClientsPage .btn-secondary-export,
+    #paidClientsPage .btn-primary-print {
+
+        flex: 1;
+    }
+
+    #paidClientsPage .paid-kpi-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    #paidClientsPage .paid-filter-toolbar {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    #paidClientsPage .floor-filter-select-wrapper {
+
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    #paidClientsPage .paid-enterprise-container {
+
+        padding: 16px;
+
+        border-radius: 15px;
+    }
+
+    #paidClientsPage .paid-title-group h2 {
+
+        font-size: 20px;
+    }
+
+    #paidClientsPage .paid-subtitle {
+
+        font-size: 11px;
+    }
+
+    #paidClientsPage .export-actions-group {
+
+        flex-direction: column;
+    }
+
+    #paidClientsPage .btn-secondary-export,
+    #paidClientsPage .btn-primary-print {
+
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   PRINT MODE
+   ========================================================= */
+
+@media print {
+
+    #paidClientsPage {
+
+        background: white !important;
+
+        color: black !important;
+    }
+
+    #paidClientsPage .paid-enterprise-container {
+
+        background: white !important;
+
+        border: none !important;
+
+        box-shadow: none !important;
+
+        min-height: auto;
+    }
+
+    #paidClientsPage .export-actions-group,
+    #paidClientsPage .paid-filter-toolbar {
+
+        display: none !important;
+    }
+
+    #paidClientsPage .paid-header {
+
+        border-bottom:
+            1px solid #ddd;
+    }
+
+    #paidClientsPage .paid-title-group h2,
+    #paidClientsPage .kpi-value {
+
+        color: #111 !important;
+    }
+
+    #paidClientsPage .paid-subtitle,
+    #paidClientsPage .kpi-label {
+
+        color: #555 !important;
+    }
+
+    #paidClientsPage .paid-kpi-card,
+    #paidClientsPage .paid-table-card {
+
+        background: white !important;
+
+        border:
+            1px solid #ddd !important;
+
+        box-shadow: none !important;
+    }
+
+    #paidClientsPage .paid-table {
+
+        color: #111 !important;
+    }
+
+    #paidClientsPage .paid-table thead {
+
+        background: #f3f4f6 !important;
+    }
+
+    #paidClientsPage .paid-table th {
+
+        color: #333 !important;
+    }
+
+    #paidClientsPage .paid-table td {
+
+        color: #222 !important;
+
+        border-color: #ddd !important;
+    }
+}
+
+```css
+/* =========================================================
+   FINANCE PAGE
+   PREMIUM ENTERPRISE FINANCIAL MANAGEMENT UI
+   ========================================================= */
+
+#financePage {
+    --finance-bg: #07111f;
+    --finance-bg-2: #0b1728;
+
+    --finance-card: rgba(15, 27, 45, 0.94);
+    --finance-card-2: #111f33;
+
+    --finance-border: rgba(148, 163, 184, 0.14);
+
+    --finance-text: #f8fafc;
+    --finance-muted: #94a3b8;
+    --finance-muted-2: #64748b;
+
+    --finance-green: #22c55e;
+    --finance-emerald: #10b981;
+    --finance-red: #ef4444;
+    --finance-blue: #3b82f6;
+    --finance-cyan: #06b6d4;
+
+    color: var(--finance-text);
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+#financePage .finance-container {
+
+    width: 100%;
+
+    padding: 26px;
+
+    min-height:
+        calc(100vh - 70px);
+
+    background:
+
+        radial-gradient(
+            circle at 88% 0%,
+            rgba(59,130,246,.10),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 5% 15%,
+            rgba(16,185,129,.07),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 55% 100%,
+            rgba(239,68,68,.035),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            var(--finance-bg),
+            var(--finance-bg-2)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,.08);
+
+    border-radius: 22px;
+
+    box-shadow:
+
+        0 25px 70px
+        rgba(0,0,0,.30),
+
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+#financePage .paid-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        4px 2px 24px;
+
+    margin-bottom: 22px;
+
+    border-bottom:
+        1px solid
+        var(--finance-border);
+}
+
+
+#financePage .paid-title-group {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+#financePage .status-indicator-dot {
+
+    width: 12px;
+    height: 12px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        var(--finance-green);
+
+    box-shadow:
+
+        0 0 0 5px
+        rgba(34,197,94,.10),
+
+        0 0 18px
+        rgba(34,197,94,.65);
+
+    animation:
+        financePulse 2.2s infinite;
+}
+
+
+@keyframes financePulse {
+
+    0%,
+    100% {
+
+        box-shadow:
+
+            0 0 0 5px
+            rgba(34,197,94,.08),
+
+            0 0 14px
+            rgba(34,197,94,.45);
+    }
+
+    50% {
+
+        box-shadow:
+
+            0 0 0 8px
+            rgba(34,197,94,.03),
+
+            0 0 25px
+            rgba(34,197,94,.75);
+    }
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+#financePage .paid-title-group h2 {
+
+    margin: 0 !important;
+
+    color:
+        #f8fafc !important;
+
+    font-size: 25px;
+
+    font-weight: 750;
+
+    letter-spacing:
+        -.5px;
+
+    line-height: 1.2;
+}
+
+
+#financePage .paid-subtitle {
+
+    margin:
+        7px 0 0;
+
+    color:
+        var(--finance-muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   HEADER ACTION
+   ========================================================= */
+
+#financePage .export-actions-group {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+#financePage #addExpenseBtn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    height: 42px;
+
+    padding:
+        0 17px;
+
+    color: white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    border:
+        1px solid
+        rgba(96,165,250,.35);
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 22px
+        rgba(37,99,235,.20);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+}
+
+
+#financePage #addExpenseBtn:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.07);
+
+    box-shadow:
+        0 13px 30px
+        rgba(37,99,235,.34);
+}
+
+
+#financePage #addExpenseBtn:active {
+
+    transform:
+        translateY(0);
+}
+
+
+#financePage #addExpenseBtn i {
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   KPI GRID
+   ========================================================= */
+
+#financePage .paid-kpi-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+#financePage .paid-kpi-card {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 112px;
+
+    padding: 19px;
+
+    overflow: hidden;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(18,32,52,.98),
+            rgba(12,24,40,.98)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,.13);
+
+    border-radius: 16px;
+
+    box-shadow:
+
+        0 12px 35px
+        rgba(0,0,0,.16),
+
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+
+#financePage .paid-kpi-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 110px;
+    height: 110px;
+
+    right: -40px;
+    bottom: -50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(59,130,246,.06);
+
+    filter:
+        blur(4px);
+
+    pointer-events: none;
+}
+
+
+#financePage .paid-kpi-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(96,165,250,.24);
+
+    box-shadow:
+
+        0 18px 42px
+        rgba(0,0,0,.24);
+}
+
+
+/* =========================================================
+   KPI ICONS
+   ========================================================= */
+
+#financePage .kpi-icon-wrapper {
+
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+}
+
+
+#financePage .emerald-bg {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(16,185,129,.17),
+            rgba(16,185,129,.05)
+        );
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(16,185,129,.035);
+}
+
+
+#financePage .red-bg {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(239,68,68,.17),
+            rgba(239,68,68,.05)
+        );
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(239,68,68,.035);
+}
+
+
+#financePage .blue-bg {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(59,130,246,.17),
+            rgba(59,130,246,.05)
+        );
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(59,130,246,.035);
+}
+
+
+/* =========================================================
+   KPI ICON COLORS
+   ========================================================= */
+
+#financePage .kpi-icon-wrapper .text-emerald {
+
+    color:
+        #34d399 !important;
+
+    text-shadow:
+        0 0 14px
+        rgba(52,211,153,.20);
+}
+
+
+#financePage .kpi-icon-wrapper .text-danger {
+
+    color:
+        #f87171 !important;
+
+    text-shadow:
+        0 0 14px
+        rgba(248,113,113,.16);
+}
+
+
+#financePage .kpi-icon-wrapper .text-blue {
+
+    color:
+        #60a5fa !important;
+
+    text-shadow:
+        0 0 14px
+        rgba(96,165,250,.16);
+}
+
+
+/* =========================================================
+   KPI DETAILS
+   ========================================================= */
+
+#financePage .kpi-details {
+
+    min-width: 0;
+}
+
+
+#financePage .kpi-label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color:
+        #94a3b8;
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .75px;
+}
+
+
+#financePage .kpi-value {
+
+    margin: 0;
+
+    color:
+        #f8fafc;
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing:
+        -.6px;
+}
+
+
+#financePage .kpi-value.text-emerald {
+
+    color:
+        #34d399 !important;
+
+    text-shadow:
+        0 0 18px
+        rgba(52,211,153,.12);
+}
+
+
+#financePage .kpi-value.text-danger {
+
+    color:
+        #f87171 !important;
+
+    text-shadow:
+        0 0 18px
+        rgba(248,113,113,.10);
+}
+
+
+#financePage .kpi-value.text-blue {
+
+    color:
+        #60a5fa !important;
+}
+
+
+/* =========================================================
+   FINANCE PROFIT COLOR
+   Automatically works with positive / negative classes
+   ========================================================= */
+
+#financePage #financeProfit {
+
+    color:
+        #60a5fa;
+}
+
+
+/* =========================================================
+   SEARCH + FILTER TOOLBAR
+   ========================================================= */
+
+#financePage .paid-filter-toolbar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 13px;
+
+    margin-bottom: 15px;
+
+    background:
+        rgba(12,24,40,.72);
+
+    border:
+        1px solid
+        rgba(148,163,184,.11);
+
+    border-radius: 14px;
+
+    backdrop-filter:
+        blur(12px);
+}
+
+
+#financePage .paid-search-input-wrapper {
+
+    position: relative;
+
+    flex: 1;
+
+    min-width: 220px;
+}
+
+
+#financePage .paid-search-input-wrapper .search-icon {
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        #64748b;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+#financePage #expenseSearchInput {
+
+    width: 100%;
+
+    height: 43px;
+
+    padding:
+        0 14px 0 42px;
+
+    color:
+        #e2e8f0;
+
+    background:
+        #0a1626;
+
+    border:
+        1px solid
+        rgba(148,163,184,.14);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 12px;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+
+#financePage #expenseSearchInput::placeholder {
+
+    color:
+        #64748b;
+}
+
+
+#financePage #expenseSearchInput:hover {
+
+    border-color:
+        rgba(148,163,184,.25);
+}
+
+
+#financePage #expenseSearchInput:focus {
+
+    background:
+        #0c1a2d;
+
+    border-color:
+        rgba(59,130,246,.55);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59,130,246,.10);
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+   ========================================================= */
+
+#financePage .floor-filter-select-wrapper {
+
+    width: 230px;
+
+    flex-shrink: 0;
+}
+
+
+#financePage #expenseCategoryFilter {
+
+    width: 100%;
+
+    height: 43px;
+
+    padding:
+        0 36px 0 13px;
+
+    color:
+        #cbd5e1;
+
+    background-color:
+        #0a1626;
+
+    border:
+        1px solid
+        rgba(148,163,184,.14);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+#financePage #expenseCategoryFilter:hover {
+
+    border-color:
+        rgba(148,163,184,.28);
+}
+
+
+#financePage #expenseCategoryFilter:focus {
+
+    border-color:
+        rgba(59,130,246,.55);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59,130,246,.10);
+}
+
+
+#financePage #expenseCategoryFilter option {
+
+    color:
+        #e2e8f0;
+
+    background:
+        #0b1728;
+}
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+#financePage .paid-table-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(15,27,45,.97),
+            rgba(9,20,34,.97)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,.13);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 18px 50px
+        rgba(0,0,0,.20);
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+#financePage .paid-table {
+
+    width: 100%;
+
+    border-collapse:
+        separate;
+
+    border-spacing:
+        0;
+
+    color:
+        #e2e8f0;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+#financePage .paid-table thead {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #14243a,
+            #101e31
+        );
+}
+
+
+#financePage .paid-table th {
+
+    height: 48px;
+
+    padding:
+        0 18px;
+
+    color:
+        #94a3b8;
+
+    font-size: 10px;
+
+    font-weight: 750;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .75px;
+
+    text-align:
+        left;
+
+    white-space:
+        nowrap;
+
+    border-bottom:
+        1px solid
+        rgba(148,163,184,.13);
+}
+
+
+#financePage .paid-table th:first-child {
+
+    border-top-left-radius:
+        16px;
+}
+
+
+#financePage .paid-table th:last-child {
+
+    border-top-right-radius:
+        16px;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
+#financePage .paid-table td {
+
+    height: 62px;
+
+    padding:
+        10px 18px;
+
+    color:
+        #cbd5e1;
+
+    border-bottom:
+        1px solid
+        rgba(148,163,184,.075);
+
+    vertical-align:
+        middle;
+}
+
+
+#financePage .paid-table tbody tr {
+
+    background:
+        rgba(10,22,38,.55);
+
+    transition:
+        background .18s ease;
+}
+
+
+#financePage .paid-table tbody tr:hover {
+
+    background:
+        rgba(30,52,78,.60);
+}
+
+
+#financePage .paid-table tbody tr:last-child td {
+
+    border-bottom:
+        none;
+}
+
+
+/* =========================================================
+   DATE COLUMN
+   ========================================================= */
+
+#financePage .paid-table td:first-child {
+
+    color:
+        #94a3b8;
+
+    font-weight:
+        600;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =========================================================
+   CATEGORY COLUMN
+   ========================================================= */
+
+#financePage .paid-table td:nth-child(2) {
+
+    color:
+        #cbd5e1;
+
+    font-weight:
+        650;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+#financePage .paid-table td:nth-child(3) {
+
+    color:
+        #e2e8f0;
+
+    max-width:
+        420px;
+}
+
+
+/* =========================================================
+   AMOUNT
+   ========================================================= */
+
+#financePage .paid-table td:nth-child(4) {
+
+    color:
+        #f87171;
+
+    font-weight:
+        800;
+
+    font-size:
+        13px;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =========================================================
+   ACTION COLUMN
+   ========================================================= */
+
+#financePage .paid-table th:last-child,
+#financePage .paid-table td:last-child {
+
+    text-align:
+        right;
+}
+
+
+/* =========================================================
+   DYNAMIC ACTION BUTTONS
+   Works with common generated button classes
+   ========================================================= */
+
+#financePage .paid-table td:last-child button {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    margin-left:
+        5px;
+
+    color:
+        #94a3b8;
+
+    background:
+        rgba(30,41,59,.70);
+
+    border:
+        1px solid
+        rgba(148,163,184,.14);
+
+    border-radius:
+        9px;
+
+    cursor:
+        pointer;
+
+    transition:
+        all .2s ease;
+}
+
+
+#financePage .paid-table td:last-child button:hover {
+
+    color:
+        #f8fafc;
+
+    background:
+        rgba(59,130,246,.15);
+
+    border-color:
+        rgba(59,130,246,.35);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   DELETE BUTTON SUPPORT
+   ========================================================= */
+
+#financePage .paid-table td:last-child
+button.delete-btn:hover,
+#financePage .paid-table td:last-child
+button.btn-delete:hover {
+
+    color:
+        #f87171;
+
+    background:
+        rgba(239,68,68,.10);
+
+    border-color:
+        rgba(239,68,68,.30);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+#financePage .paid-table tbody:empty::after {
+
+    content:
+        "No expenses found";
+
+    display:
+        block;
+
+    padding:
+        55px 20px;
+
+    color:
+        #64748b;
+
+    text-align:
+        center;
+
+    font-size:
+        13px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+#financePage ::-webkit-scrollbar {
+
+    width:
+        7px;
+
+    height:
+        7px;
+}
+
+
+#financePage ::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+}
+
+
+#financePage ::-webkit-scrollbar-thumb {
+
+    background:
+        #334155;
+
+    border-radius:
+        20px;
+}
+
+
+#financePage ::-webkit-scrollbar-thumb:hover {
+
+    background:
+        #475569;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    #financePage .paid-kpi-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0,1fr));
+    }
+
+    #financePage .paid-table-card {
+
+        overflow-x:
+            auto;
+    }
+
+    #financePage .paid-table {
+
+        min-width:
+            850px;
+    }
+}
+
+
+@media (max-width: 850px) {
+
+    #financePage .paid-header {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+    }
+
+
+    #financePage .export-actions-group {
+
+        width:
+            100%;
+    }
+
+
+    #financePage #addExpenseBtn {
+
+        width:
+            100%;
+    }
+
+
+    #financePage .paid-kpi-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    #financePage .paid-filter-toolbar {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+    }
+
+
+    #financePage .floor-filter-select-wrapper {
+
+        width:
+            100%;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    #financePage .finance-container {
+
+        padding:
+            16px;
+
+        border-radius:
+            15px;
+    }
+
+
+    #financePage .paid-title-group h2 {
+
+        font-size:
+            20px;
+    }
+
+
+    #financePage .paid-subtitle {
+
+        font-size:
+            11px;
+    }
+
+
+    #financePage .kpi-value {
+
+        font-size:
+            24px;
+    }
+
+
+    #financePage .paid-table th,
+    #financePage .paid-table td {
+
+        padding:
+            10px 14px;
+    }
+}
+
+
+/* =========================================================
+   PRINT REPORT
+   ========================================================= */
+
+@media print {
+
+    #financePage {
+
+        background:
+            white !important;
+
+        color:
+            black !important;
+    }
+
+
+    #financePage .finance-container {
+
+        background:
+            white !important;
+
+        border:
+            none !important;
+
+        box-shadow:
+            none !important;
+
+        min-height:
+            auto;
+    }
+
+
+    #financePage .export-actions-group,
+    #financePage .paid-filter-toolbar {
+
+        display:
+            none !important;
+    }
+
+
+    #financePage .paid-header {
+
+        border-bottom:
+            1px solid #ddd;
+    }
+
+
+    #financePage .paid-title-group h2,
+    #financePage .kpi-value {
+
+        color:
+            #111 !important;
+    }
+
+
+    #financePage .paid-subtitle,
+    #financePage .kpi-label {
+
+        color:
+            #555 !important;
+    }
+
+
+    #financePage .paid-kpi-card,
+    #financePage .paid-table-card {
+
+        background:
+            white !important;
+
+        border:
+            1px solid #ddd !important;
+
+        box-shadow:
+            none !important;
+    }
+
+
+    #financePage .paid-table {
+
+        color:
+            #111 !important;
+    }
+
+
+    #financePage .paid-table thead {
+
+        background:
+            #f3f4f6 !important;
+    }
+
+
+    #financePage .paid-table th {
+
+        color:
+            #333 !important;
+    }
+
+
+    #financePage .paid-table td {
+
+        color:
+            #222 !important;
+
+        border-color:
+            #ddd !important;
+    }
+
+
+    #financePage .paid-table td:nth-child(4) {
+
+        color:
+            #dc2626 !important;
+    }
+}
+/* =========================================
+   PROFESSIONAL SVG ICON SYSTEM
+========================================= */
+
+svg {
+    flex-shrink: 0;
+}
+
+.brand-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
+
+.tab-btn svg {
+    width: 19px;
+    height: 19px;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.login-btn svg {
+    width: 19px;
+    height: 19px;
+}
+
+.btn-primary-print,
+.btn-secondary-export,
+.btn-cancel,
+.btn-save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
+
+.btn-primary-print svg,
+.btn-secondary-export svg {
+    width: 17px;
+    height: 17px;
+}
+
+.kpi-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kpi-icon-wrapper svg {
+    width: 23px;
+    height: 23px;
+}
+
+.modal-header-custom h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-header-custom h3 svg {
+    width: 21px;
+    height: 21px;
+}
+
+.search-icon {
+    pointer-events: none;
+}
+
+.paid-search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.paid-search-input-wrapper .search-icon {
+    position: absolute;
+    left: 16px;
+    z-index: 2;
+}
+
+.paid-search-input-wrapper input {
+    padding-left: 46px;
+}
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.logout-svg {
+    flex-shrink: 0;
 }
